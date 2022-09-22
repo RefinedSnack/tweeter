@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -30,13 +29,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import edu.byu.cs.client.R;
-import edu.byu.cs.tweeter.client.backgroundTask.GetStoryTask;
-import edu.byu.cs.tweeter.client.backgroundTask.GetUserTask;
 import edu.byu.cs.tweeter.client.cache.Cache;
+import edu.byu.cs.tweeter.client.presenter.GetStoryPresenter;
 import edu.byu.cs.tweeter.client.view.main.MainActivity;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
@@ -44,7 +40,9 @@ import edu.byu.cs.tweeter.model.domain.User;
 /**
  * Implements the "Story" tab.
  */
-public class StoryFragment extends Fragment {
+public class StoryFragment extends Fragment implements GetStoryPresenter.StoryView
+{
+    private GetStoryPresenter presenter;
     private static final String LOG_TAG = "StoryFragment";
     private static final String USER_KEY = "UserKey";
 
@@ -77,6 +75,7 @@ public class StoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        presenter = new GetStoryPresenter(this);
         View view = inflater.inflate(R.layout.fragment_story, container, false);
 
         //noinspection ConstantConditions
@@ -123,11 +122,7 @@ public class StoryFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    GetUserTask getUserTask = new GetUserTask(Cache.getInstance().getCurrUserAuthToken(),
-                            userAlias.getText().toString(), new GetUserHandler());
-                    ExecutorService executor = Executors.newSingleThreadExecutor();
-                    executor.execute(getUserTask);
-                    Toast.makeText(getContext(), "Getting user's profile...", Toast.LENGTH_LONG).show();
+                    presenter.getUser(Cache.getInstance().getCurrUserAuthToken(), userAlias.getText().toString());
                 }
             });
         }
@@ -158,11 +153,7 @@ public class StoryFragment extends Fragment {
 
                         String clickable = s.subSequence(start, end).toString();
 
-                        GetUserTask getUserTask = new GetUserTask(Cache.getInstance().getCurrUserAuthToken(),
-                                clickable, new GetUserHandler());
-                        ExecutorService executor = Executors.newSingleThreadExecutor();
-                        executor.execute(getUserTask);
-                        Toast.makeText(getContext(), "Getting user's profile...", Toast.LENGTH_LONG).show();
+                        presenter.getUser(Cache.getInstance().getCurrUserAuthToken(), clickable);
                     }
 
                     @Override
@@ -185,29 +176,6 @@ public class StoryFragment extends Fragment {
             post.setText(spannableString);
             post.setClickable(true);
             post.setMovementMethod(LinkMovementMethod.getInstance());
-        }
-
-        /**
-         * Message handler (i.e., observer) for GetUserTask.
-         */
-        private class GetUserHandler extends Handler {
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                boolean success = msg.getData().getBoolean(GetUserTask.SUCCESS_KEY);
-                if (success) {
-                    User user = (User) msg.getData().getSerializable(GetUserTask.USER_KEY);
-
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    intent.putExtra(MainActivity.CURRENT_USER_KEY, user);
-                    startActivity(intent);
-                } else if (msg.getData().containsKey(GetUserTask.MESSAGE_KEY)) {
-                    String message = msg.getData().getString(GetUserTask.MESSAGE_KEY);
-                    Toast.makeText(getContext(), "Failed to get user's profile: " + message, Toast.LENGTH_LONG).show();
-                } else if (msg.getData().containsKey(GetUserTask.EXCEPTION_KEY)) {
-                    Exception ex = (Exception) msg.getData().getSerializable(GetUserTask.EXCEPTION_KEY);
-                    Toast.makeText(getContext(), "Failed to get user's profile because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
         }
     }
 
@@ -334,10 +302,7 @@ public class StoryFragment extends Fragment {
                 isLoading = true;
                 addLoadingFooter();
 
-                GetStoryTask getStoryTask = new GetStoryTask(Cache.getInstance().getCurrUserAuthToken(),
-                        user, PAGE_SIZE, lastStatus, new GetStoryHandler());
-                ExecutorService executor = Executors.newSingleThreadExecutor();
-                executor.execute(getStoryTask);
+                presenter.getStory(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastStatus);
             }
         }
 
@@ -359,34 +324,6 @@ public class StoryFragment extends Fragment {
          */
         private void removeLoadingFooter() {
             removeItem(story.get(story.size() - 1));
-        }
-
-
-        /**
-         * Message handler (i.e., observer) for GetStoryTask.
-         */
-        private class GetStoryHandler extends Handler {
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                isLoading = false;
-                removeLoadingFooter();
-
-                boolean success = msg.getData().getBoolean(GetStoryTask.SUCCESS_KEY);
-                if (success) {
-                    List<Status> statuses = (List<Status>) msg.getData().getSerializable(GetStoryTask.STATUSES_KEY);
-                    hasMorePages = msg.getData().getBoolean(GetStoryTask.MORE_PAGES_KEY);
-
-                    lastStatus = (statuses.size() > 0) ? statuses.get(statuses.size() - 1) : null;
-
-                    storyRecyclerViewAdapter.addItems(statuses);
-                } else if (msg.getData().containsKey(GetStoryTask.MESSAGE_KEY)) {
-                    String message = msg.getData().getString(GetStoryTask.MESSAGE_KEY);
-                    Toast.makeText(getContext(), "Failed to get story: " + message, Toast.LENGTH_LONG).show();
-                } else if (msg.getData().containsKey(GetStoryTask.EXCEPTION_KEY)) {
-                    Exception ex = (Exception) msg.getData().getSerializable(GetStoryTask.EXCEPTION_KEY);
-                    Toast.makeText(getContext(), "Failed to get story because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
         }
     }
 
@@ -437,4 +374,49 @@ public class StoryFragment extends Fragment {
         }
     }
 
+
+
+    @Override
+    public void displayInfoMessage(String message)
+    {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void navigateToUser(User user)
+    {
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        intent.putExtra(MainActivity.CURRENT_USER_KEY, user);
+        startActivity(intent);
+    }
+
+    @Override
+    public void setLoading(boolean value)
+    {
+       storyRecyclerViewAdapter.isLoading = value;
+    }
+
+    @Override
+    public void removeLoadingFooter()
+    {
+        storyRecyclerViewAdapter.removeLoadingFooter();
+    }
+
+    @Override
+    public void setLast(Status last)
+    {
+        storyRecyclerViewAdapter.lastStatus = last;
+    }
+
+    @Override
+    public void addItems(List<Status> toAdd)
+    {
+        storyRecyclerViewAdapter.addItems(toAdd);
+    }
+
+    @Override
+    public void setHasMorePages(boolean value)
+    {
+        storyRecyclerViewAdapter.hasMorePages = value;
+    }
 }
