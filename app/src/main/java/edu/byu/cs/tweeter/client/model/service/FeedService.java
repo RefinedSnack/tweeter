@@ -18,7 +18,7 @@ public class FeedService
 {
     public interface GetFeedObserver
     {
-        void handleGetFeedSuccess(Boolean user, Status pageSize, List<Status> last);
+        void handleGetFeedSuccess(Boolean hasMorePages, Status last, List<Status> toAdd);
         void handleGetFeedFailure(String message);
         void handleGetFeedThrewAnException(Exception ex);
         void handleLoading();

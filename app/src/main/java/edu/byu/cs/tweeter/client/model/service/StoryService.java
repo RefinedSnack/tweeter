@@ -18,7 +18,7 @@ public class StoryService
 {
     public interface GetStoryObserver
     {
-        void handleGetStorySuccess(Boolean user, Status pageSize, List<Status> last);
+        void handleGetStorySuccess(Boolean hasMorePages, Status last, List<Status> toAdd);
         void handleGetStoryFailure(String message);
         void handleGetStoryThrewAnException(Exception ex);
         void handleLoading();
