@@ -20,7 +20,8 @@ public class MainPresenter
         MainService.FollowObserver,
         MainService.IsFollowerObserver,
         MainService.GetFollowingObserver,
-        MainService.GetFollowersObserver
+        MainService.GetFollowersObserver,
+        MainService.LogoutObserver
 {
     public interface MainView
     {
@@ -32,6 +33,10 @@ public class MainPresenter
 
         void clearPostingInfoMessage();
 
+        void displayLogoutInfoMessage(String message);
+
+        void clearLogoutInfoMessage();
+
         void updateSelectedUserFollowingAndFollowers();
 
         void updateFollowButton(boolean isFollowing);
@@ -41,6 +46,8 @@ public class MainPresenter
         void setFolloweeCount(int count);
 
         void setFollowerCount(int count);
+
+        void logoutUser();
     }
 
     MainView view;
@@ -198,9 +205,30 @@ public class MainPresenter
         view.displayInfoMessage("Failed to get follower count because of exception: " + ex.getMessage());
     }
 
+    public void logout(AuthToken authToken)
+    {
+        view.displayLogoutInfoMessage("Logging Out...");
+        new MainService().logout(authToken, this);
+    }
 
+    @Override
+    public void handleLogoutSuccess()
+    {
+        view.clearLogoutInfoMessage();
+        view.logoutUser();
+    }
 
+    @Override
+    public void handleLogoutFailure(String message)
+    {
+        view.displayInfoMessage("Failed to logout: " + message);
+    }
 
+    @Override
+    public void handleLogoutThrewAnException(Exception ex)
+    {
+        view.displayInfoMessage("Failed to logout because of exception: " + ex.getMessage());
+    }
 
 
 

@@ -12,6 +12,7 @@ import edu.byu.cs.tweeter.client.backgroundTask.FollowTask;
 import edu.byu.cs.tweeter.client.backgroundTask.GetFollowersCountTask;
 import edu.byu.cs.tweeter.client.backgroundTask.GetFollowingCountTask;
 import edu.byu.cs.tweeter.client.backgroundTask.IsFollowerTask;
+import edu.byu.cs.tweeter.client.backgroundTask.LogoutTask;
 import edu.byu.cs.tweeter.client.backgroundTask.PostStatusTask;
 import edu.byu.cs.tweeter.client.backgroundTask.UnfollowTask;
 import edu.byu.cs.tweeter.client.cache.Cache;
@@ -312,5 +313,53 @@ public class MainService
         ExecutorService executor = Executors.newFixedThreadPool(2);
         getFollowingCount(authToken, currUser, selectedUser, followingObserver, executor);
         getFollowersCount(authToken, currUser, selectedUser, followersObserver, executor);
+    }
+
+
+    public interface LogoutObserver
+    {
+        void handleLogoutSuccess();
+
+        void handleLogoutFailure(String message);
+
+        void handleLogoutThrewAnException(Exception ex);
+    }
+
+    public void logout(AuthToken authToken, LogoutObserver observer)
+    {
+        LogoutTask logoutTask = new LogoutTask(authToken, new LogoutHandler(observer));
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(logoutTask);
+
+    }
+
+    // LogoutHandler
+
+    private class LogoutHandler extends Handler
+    {
+        private LogoutObserver observer;
+
+        public LogoutHandler(LogoutObserver observer)
+        {
+            this.observer = observer;
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg)
+        {
+            boolean success = msg.getData().getBoolean(LogoutTask.SUCCESS_KEY);
+            if (success)
+            {
+                observer.handleLogoutSuccess();
+            } else if (msg.getData().containsKey(LogoutTask.MESSAGE_KEY))
+            {
+                String message = msg.getData().getString(LogoutTask.MESSAGE_KEY);
+                observer.handleLogoutFailure(message);
+            } else if (msg.getData().containsKey(LogoutTask.EXCEPTION_KEY))
+            {
+                Exception ex = (Exception) msg.getData().getSerializable(LogoutTask.EXCEPTION_KEY);
+                observer.handleLogoutThrewAnException(ex);
+            }
+        }
     }
 }
