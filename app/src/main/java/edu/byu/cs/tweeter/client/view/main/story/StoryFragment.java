@@ -301,7 +301,6 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
             if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
                 isLoading = true;
                 addLoadingFooter();
-
                 presenter.getStory(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastStatus);
             }
         }
@@ -379,7 +378,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
     @Override
     public void displayInfoMessage(String message)
     {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -393,7 +392,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
     @Override
     public void setLoading(boolean value)
     {
-       storyRecyclerViewAdapter.isLoading = value;
+        storyRecyclerViewAdapter.isLoading = value;
     }
 
     @Override

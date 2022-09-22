@@ -33,10 +33,12 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
     private MainPresenter presenter;
     private static final String LOG_TAG = "MainActivity";
 
+
     public static final String CURRENT_USER_KEY = "CurrentUser";
 
     private Toast logOutToast;
     private Toast postingToast;
+    private Toast followToast;
     private User selectedUser;
     private TextView followeeCount;
     private TextView followerCount;
@@ -107,8 +109,6 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
             @Override
             public void onClick(View v)
             {
-                followButton.setEnabled(false);
-
                 if (followButton.getText().toString().equals(v.getContext().getString(R.string.following)))
                 {
                     presenter.unfollow(Cache.getInstance().getCurrUserAuthToken(), selectedUser);
@@ -160,12 +160,6 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
     }
 
     @Override
-    public void displayInfoMessage(String message)
-    {
-        Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
     public void navigateToUser(User user)
     {
         Intent intent = new Intent(MainActivity.this, MainActivity.class);
@@ -177,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
     public void displayPostingInfoMessage(String message)
     {
         clearPostingInfoMessage();
-        postingToast = Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG);
+        postingToast = Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT);
         postingToast.show();
     }
 
@@ -192,10 +186,17 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
     }
 
     @Override
+    public void displayInfoMessage(String message)
+    {
+        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
     public void displayLogoutInfoMessage(String message)
     {
         clearPostingInfoMessage();
-        logOutToast = Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG);
+        logOutToast = Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT);
         logOutToast.show();
     }
 

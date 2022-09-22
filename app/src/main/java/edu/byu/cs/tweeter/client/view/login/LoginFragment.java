@@ -89,7 +89,7 @@ public class LoginFragment extends Fragment implements LoginPresenter.LoginView
     public void displayInfoMessage(String message)
     {
         clearInfoMessage();
-        loginInToast = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
+        loginInToast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
         loginInToast.show();
     }
 

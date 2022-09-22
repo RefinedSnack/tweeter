@@ -357,7 +357,7 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Fo
     @Override
     public void displayInfoMessage(String message)
     {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

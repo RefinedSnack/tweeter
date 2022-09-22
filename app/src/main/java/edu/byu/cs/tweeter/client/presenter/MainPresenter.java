@@ -25,8 +25,6 @@ public class MainPresenter
 {
     public interface MainView
     {
-        void displayInfoMessage(String message);
-
         void navigateToUser(User user);
 
         void displayPostingInfoMessage(String message);
@@ -36,6 +34,8 @@ public class MainPresenter
         void displayLogoutInfoMessage(String message);
 
         void clearLogoutInfoMessage();
+
+        void displayInfoMessage(String message);
 
         void updateSelectedUserFollowingAndFollowers();
 
@@ -91,6 +91,7 @@ public class MainPresenter
 
     public void unfollow(AuthToken authToken, User user)
     {
+        view.setFollowButtonEnabled(false);
         new MainService().unfollow(authToken, user, this);
         view.displayInfoMessage("Removing " + user.getName() + "...");
     }
@@ -99,7 +100,7 @@ public class MainPresenter
     public void handleUnfollowSuccess()
     {
         view.updateSelectedUserFollowingAndFollowers();
-        view.updateFollowButton(true);
+        view.updateFollowButton(false);
     }
 
     @Override
@@ -116,7 +117,8 @@ public class MainPresenter
 
     public void follow(AuthToken authToken, User user)
     {
-        new MainService().unfollow(authToken, user, this);
+        view.setFollowButtonEnabled(false);
+        new MainService().follow(authToken, user, this);
         view.displayInfoMessage("Adding " + user.getName() + "...");
     }
 

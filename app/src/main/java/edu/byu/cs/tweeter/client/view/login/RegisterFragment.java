@@ -92,7 +92,7 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.Regi
                 try
                 {
                     errorView.setText(null);
-                    registeringToast = Toast.makeText(getContext(), "Registering...", Toast.LENGTH_LONG);
+                    registeringToast = Toast.makeText(getContext(), "Registering...", Toast.LENGTH_SHORT);
                     registeringToast.show();
 
                     String imageBytesBase64 = "";
@@ -152,7 +152,7 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.Regi
     public void displayInfoMessage(String message)
     {
         clearInfoMessage();
-        registeringToast = Toast.makeText(getContext(), message, Toast.LENGTH_LONG);
+        registeringToast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
         registeringToast.show();
     }
 
