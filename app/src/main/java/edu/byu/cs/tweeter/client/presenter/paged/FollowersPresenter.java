@@ -12,7 +12,7 @@ public class FollowersPresenter extends PagedPresenter<User>
     }
 
     @Override
-    protected String getMessagePrefix()
+    protected String getPagedMessageInfix()
     {
         return "followers";
     }

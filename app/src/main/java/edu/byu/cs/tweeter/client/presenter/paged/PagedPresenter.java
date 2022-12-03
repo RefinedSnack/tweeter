@@ -3,13 +3,13 @@ package edu.byu.cs.tweeter.client.presenter.paged;
 import java.util.List;
 
 import edu.byu.cs.tweeter.client.model.service.paged.PagedService;
-import edu.byu.cs.tweeter.client.presenter.Presenter;
+import edu.byu.cs.tweeter.client.presenter.GetUserPresenter;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public abstract class PagedPresenter<ITEM> extends Presenter<PagedPresenter.PagedView>
+public abstract class PagedPresenter<ITEM> extends GetUserPresenter<PagedPresenter.PagedView>
 {
-    public interface PagedView<ITEM> extends Presenter.view
+    public interface PagedView<ITEM> extends GetUserView
     {
         void setLoading(boolean value);
 
@@ -29,7 +29,7 @@ public abstract class PagedPresenter<ITEM> extends Presenter<PagedPresenter.Page
         super(view);
     }
 
-    protected class PagedObserver<ITEM> implements PagedService.GetPagedObserver<ITEM>
+    protected class PagedObserver<ITEM> extends InfixErrorObserver implements PagedService.GetPagedObserver<ITEM>
     {
         @Override
         public void handleSuccess(Boolean hasMorePages, ITEM last, List<ITEM> toAdd)
@@ -40,17 +40,9 @@ public abstract class PagedPresenter<ITEM> extends Presenter<PagedPresenter.Page
         }
 
         @Override
-        public void handleFailure(String message)
+        protected String infixValue()
         {
-            view.displayInfoMessage(String.format("Failed to get %s: %s",
-                    getMessagePrefix(), message));
-        }
-
-        @Override
-        public void handleException(Exception ex)
-        {
-            view.displayInfoMessage(String.format("Failed to get %s because of exception: %s",
-                    getMessagePrefix(), ex.getMessage()));
+            return getPagedMessageInfix();
         }
 
         @Override
@@ -61,6 +53,6 @@ public abstract class PagedPresenter<ITEM> extends Presenter<PagedPresenter.Page
         }
     }
 
-    protected abstract String getMessagePrefix();
+    protected abstract String getPagedMessageInfix();
     public abstract void getPage(AuthToken authToken, User user, int pageSize, ITEM last);
 }

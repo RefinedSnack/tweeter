@@ -1,15 +1,12 @@
 package edu.byu.cs.tweeter.client.presenter;
 
-import edu.byu.cs.tweeter.client.model.service.UserService;
-import edu.byu.cs.tweeter.model.domain.AuthToken;
-import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 
-public abstract class Presenter <VIEW extends Presenter.view>
+public class Presenter<VIEW extends Presenter.View>
 {
-    public interface view
+    public interface View
     {
         void displayInfoMessage(String message);
-        void navigateToUser(User user);
     }
     protected VIEW view;
 
@@ -18,30 +15,24 @@ public abstract class Presenter <VIEW extends Presenter.view>
         this.view = view;
     }
 
-    public void getUser(AuthToken authToken, String alias)
+    protected abstract class InfixErrorObserver implements ServiceObserver
     {
-        view.displayInfoMessage("Getting user's profile...");
-        new UserService().getUser(authToken, alias, new GetUserObserver());
-    }
-
-    protected class GetUserObserver implements UserService.GetUserObserver
-    {
-        @Override
-        public void handleSuccess(User user)
-        {
-            view.navigateToUser(user);
-        }
-
         @Override
         public void handleFailure(String message)
         {
-            view.displayInfoMessage("Failed to get user's profile: " + message);
+            view.displayInfoMessage(String.format("Failed to %s: %s",
+                    infixValue(),
+                    message));
         }
 
         @Override
         public void handleException(Exception ex)
         {
-            view.displayInfoMessage("Failed to get user's profile because of exception: " + ex.getMessage());
+            view.displayInfoMessage(String.format("Failed to %s because of exception: %s",
+                    infixValue(),
+                    ex.getMessage()));
         }
+
+        protected abstract String infixValue();
     }
 }

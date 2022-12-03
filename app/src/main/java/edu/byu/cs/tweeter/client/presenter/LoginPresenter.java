@@ -18,7 +18,14 @@ public class LoginPresenter extends AuthenticationPresenter
             return;
         }
         view.displayInfoMessage("Logging in...");
-        new UserService().login(alias, password, new AuthenticationObserver());
+        new UserService().login(alias, password, new AuthenticationObserver()
+        {
+            @Override
+            protected String infixValue()
+            {
+                return "login";
+            }
+        });
     }
 
     private String validateLogin(String alias, String password)
@@ -36,11 +43,5 @@ public class LoginPresenter extends AuthenticationPresenter
             return "Password cannot be empty.";
         }
         return null;
-    }
-
-    @Override
-    protected String getMessagePrefix()
-    {
-        return "login";
     }
 }

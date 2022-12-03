@@ -13,7 +13,7 @@ public class StoryPresenter extends PagedPresenter<Status>
     }
 
     @Override
-    protected String getMessagePrefix()
+    protected String getPagedMessageInfix()
     {
         return "story";
     }

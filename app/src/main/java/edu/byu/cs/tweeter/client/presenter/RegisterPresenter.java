@@ -23,7 +23,14 @@ public class RegisterPresenter extends AuthenticationPresenter
                                    alias,
                                    password,
                                    imageBytesBase64,
-                           new AuthenticationObserver());
+                new AuthenticationObserver()
+                {
+                    @Override
+                    protected String infixValue()
+                    {
+                        return "register";
+                    }
+                });
     }
 
     private String validateRegistration(String firstName, String lastName, String alias, String password, String imageBytesBase64) {
@@ -50,11 +57,5 @@ public class RegisterPresenter extends AuthenticationPresenter
             return "Profile image must be uploaded.";
         }
         return null;
-    }
-
-    @Override
-    protected String getMessagePrefix()
-    {
-        return "register";
     }
 }

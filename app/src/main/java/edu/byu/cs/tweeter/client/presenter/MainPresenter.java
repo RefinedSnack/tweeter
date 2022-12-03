@@ -13,9 +13,9 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class MainPresenter extends Presenter<MainPresenter.MainView>
+public class MainPresenter extends GetUserPresenter<MainPresenter.MainView>
 {
-    public interface MainView extends Presenter.view
+    public interface MainView extends GetUserView
     {
         void displayPostingInfoMessage(String message);
 
@@ -43,7 +43,6 @@ public class MainPresenter extends Presenter<MainPresenter.MainView>
         super(view);
     }
 
-
     public void postStatus(AuthToken authToken, String post)
     {
         view.displayPostingInfoMessage("Posting Status...");
@@ -57,7 +56,7 @@ public class MainPresenter extends Presenter<MainPresenter.MainView>
         new MainService().postStatus(authToken, newStatus, new PostStatusObserver());
     }
 
-    private class PostStatusObserver implements MainService.SimpleServiceObserver
+    private class PostStatusObserver extends InfixErrorObserver implements MainService.SimpleServiceObserver
     {
         @Override
         public void handleSuccess()
@@ -67,49 +66,20 @@ public class MainPresenter extends Presenter<MainPresenter.MainView>
         }
 
         @Override
-        public void handleFailure(String message)
+        protected String infixValue()
         {
-            view.displayInfoMessage("Failed to post status: " + message);
-        }
-
-        @Override
-        public void handleException(Exception ex)
-        {
-            view.displayInfoMessage("Failed to post status because of exception: " + ex.getMessage());
+            return "post status";
         }
     }
 
 
     public void unfollow(AuthToken authToken, User user)
     {
-        view.setFollowButtonEnabled(true);
+        view.setFollowButtonEnabled(false);
         new MainService().unfollow(authToken, user, new UnfollowObserver());
         view.displayInfoMessage("Removing " + user.getName() + "...");
     }
 
-    private class UnfollowObserver implements MainService.SimpleServiceObserver
-    {
-        @Override
-        public void handleSuccess()
-        {
-            view.updateSelectedUserFollowingAndFollowers();
-            view.updateFollowButton(false);
-        }
-
-        @Override
-        public void handleFailure(String message)
-        {
-            view.displayInfoMessage("Failed to unfollow: " + message);
-            view.updateFollowButton(true);
-        }
-
-        @Override
-        public void handleException(Exception ex)
-        {
-            view.displayInfoMessage("Failed to unfollow because of exception: " + ex.getMessage());
-            view.updateFollowButton(true);
-        }
-    }
 
     public void follow(AuthToken authToken, User user)
     {
@@ -118,27 +88,68 @@ public class MainPresenter extends Presenter<MainPresenter.MainView>
         view.displayInfoMessage("Adding " + user.getName() + "...");
     }
 
-    private class FollowObserver implements MainService.SimpleServiceObserver
+    private abstract class FollowButtonObserver implements MainService.SimpleServiceObserver
     {
         @Override
         public void handleSuccess()
         {
             view.updateSelectedUserFollowingAndFollowers();
-            view.updateFollowButton(true);
+            view.updateFollowButton(newButtonState());
+            enableButtonToBeClicked();
         }
 
         @Override
         public void handleFailure(String message)
         {
-            view.displayInfoMessage("Failed to follow: " + message);
-            view.updateFollowButton(false);
+            view.displayInfoMessage(String.format("Failed to %s: %s", getMessagePrefix(), message));
+            enableButtonToBeClicked();
         }
 
         @Override
         public void handleException(Exception ex)
         {
-            view.displayInfoMessage("Failed to follow because of exception: " + ex.getMessage());
-            view.updateFollowButton(false);
+            view.displayInfoMessage(String.format("Failed to %s because of exception: %s", getMessagePrefix(), ex.getMessage()));
+            enableButtonToBeClicked();
+        }
+
+        private void enableButtonToBeClicked()
+        {
+            view.setFollowButtonEnabled(true);
+        }
+
+        abstract boolean newButtonState();
+        abstract String getMessagePrefix();
+    }
+
+    private class FollowObserver extends FollowButtonObserver
+    {
+
+        @Override
+        boolean newButtonState()
+        {
+            return true;
+        }
+
+        @Override
+        String getMessagePrefix()
+        {
+            return "follow";
+        }
+    }
+
+    private class UnfollowObserver extends FollowButtonObserver
+    {
+
+        @Override
+        boolean newButtonState()
+        {
+            return false;
+        }
+
+        @Override
+        String getMessagePrefix()
+        {
+            return "unfollow";
         }
     }
 
@@ -147,7 +158,7 @@ public class MainPresenter extends Presenter<MainPresenter.MainView>
         new MainService().IsFollower(authToken, currUser, selectedUser, new IsFollowingObserver());
     }
 
-    private class IsFollowingObserver implements MainService.IsFollowerObserver
+    private class IsFollowingObserver extends InfixErrorObserver implements MainService.IsFollowerObserver
     {
         @Override
         public void handleSuccess(boolean isFollowing)
@@ -156,26 +167,18 @@ public class MainPresenter extends Presenter<MainPresenter.MainView>
         }
 
         @Override
-        public void handleFailure(String message)
+        protected String infixValue()
         {
-            view.displayInfoMessage("Failed to determine following relationship: " + message);
+            return "determine following relationship";
         }
-
-        @Override
-        public void handleException(Exception ex)
-        {
-            view.displayInfoMessage("Failed to determine following relationship because of exception: " + ex.getMessage());
-        }
-
     }
 
-
-    public void getFollowCounts(AuthToken currUserAuthToken, User currUser, User selectedUser)
+    public void getFollowCounts(AuthToken currUserAuthToken, User selectedUser)
     {
         new MainService().getFollowCounts(currUserAuthToken, selectedUser, new FollowingObserver(), new FollowersObserver());
     }
 
-    private class FollowingObserver implements MainService.GetCountObserver
+    private class FollowingObserver extends InfixErrorObserver implements MainService.GetCountObserver
     {
         @Override
         public void handleSuccess(int count)
@@ -184,19 +187,13 @@ public class MainPresenter extends Presenter<MainPresenter.MainView>
         }
 
         @Override
-        public void handleFailure(String message)
+        protected String infixValue()
         {
-            view.displayInfoMessage("Failed to get following count: " + message);
-        }
-
-        @Override
-        public void handleException(Exception ex)
-        {
-            view.displayInfoMessage("Failed to get following count because of exception: " + ex.getMessage());
+            return "get following count";
         }
     }
 
-    private class FollowersObserver implements MainService.GetCountObserver
+    private class FollowersObserver extends InfixErrorObserver implements MainService.GetCountObserver
     {
         @Override
         public void handleSuccess(int count)
@@ -205,15 +202,9 @@ public class MainPresenter extends Presenter<MainPresenter.MainView>
         }
 
         @Override
-        public void handleFailure(String message)
+        protected String infixValue()
         {
-            view.displayInfoMessage("Failed to get follower count: " + message);
-        }
-
-        @Override
-        public void handleException(Exception ex)
-        {
-            view.displayInfoMessage("Failed to get follower count because of exception: " + ex.getMessage());
+            return "get follower count";
         }
     }
 
@@ -223,7 +214,7 @@ public class MainPresenter extends Presenter<MainPresenter.MainView>
         new MainService().logout(authToken, new LogoutObserver());
     }
 
-    private class LogoutObserver implements MainService.SimpleServiceObserver
+    private class LogoutObserver extends InfixErrorObserver implements MainService.SimpleServiceObserver
     {
         @Override
         public void handleSuccess()
@@ -233,15 +224,9 @@ public class MainPresenter extends Presenter<MainPresenter.MainView>
         }
 
         @Override
-        public void handleFailure(String message)
+        protected String infixValue()
         {
-            view.displayInfoMessage("Failed to logout: " + message);
-        }
-
-        @Override
-        public void handleException(Exception ex)
-        {
-            view.displayInfoMessage("Failed to logout because of exception: " + ex.getMessage());
+            return "logout";
         }
     }
 
@@ -265,7 +250,7 @@ public class MainPresenter extends Presenter<MainPresenter.MainView>
         return containedUrls;
     }
 
-    public int findUrlEndIndex(String word)
+    private int findUrlEndIndex(String word)
     {
         if (word.contains(".com"))
         {
@@ -298,7 +283,7 @@ public class MainPresenter extends Presenter<MainPresenter.MainView>
         }
     }
 
-    public List<String> parseMentions(String post)
+    private List<String> parseMentions(String post)
     {
         List<String> containedMentions = new ArrayList<>();
 
@@ -316,7 +301,7 @@ public class MainPresenter extends Presenter<MainPresenter.MainView>
         return containedMentions;
     }
 
-    public String getFormattedDateTime()
+    private String getFormattedDateTime()
     {
         try
         {

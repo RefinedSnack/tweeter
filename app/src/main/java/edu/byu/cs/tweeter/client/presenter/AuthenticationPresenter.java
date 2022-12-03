@@ -4,9 +4,9 @@ import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public abstract class AuthenticationPresenter extends Presenter<AuthenticationPresenter.AuthenticationView>
+public abstract class AuthenticationPresenter extends GetUserPresenter<AuthenticationPresenter.AuthenticationView>
 {
-    public interface AuthenticationView extends Presenter.view
+    public interface AuthenticationView extends GetUserView
     {
         void displayErrorMessage(String message);
 
@@ -21,7 +21,7 @@ public abstract class AuthenticationPresenter extends Presenter<AuthenticationPr
         super(view);
     }
 
-    protected class AuthenticationObserver implements UserService.AuthenticationObserver
+    abstract protected class AuthenticationObserver extends InfixErrorObserver implements UserService.AuthenticationObserver
     {
         @Override
         public void handleSuccess(User user, AuthToken authToken)
@@ -33,22 +33,6 @@ public abstract class AuthenticationPresenter extends Presenter<AuthenticationPr
             view.navigateToUser(user);
         }
 
-        @Override
-        public void handleFailure(String message)
-        {
-            view.displayInfoMessage(String.format("Failed to %s: %s",
-                                        getMessagePrefix(),
-                                        message));
-        }
 
-        @Override
-        public void handleException(Exception ex)
-        {
-            view.displayInfoMessage(String.format("Failed to %s because of exception: %s",
-                                        getMessagePrefix(),
-                                        ex.getMessage()));
-        }
     }
-
-    protected abstract String getMessagePrefix();
 }
