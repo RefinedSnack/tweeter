@@ -26,14 +26,15 @@ import java.util.List;
 
 import edu.byu.cs.client.R;
 import edu.byu.cs.tweeter.client.cache.Cache;
-import edu.byu.cs.tweeter.client.presenter.FollowersPresenter;
+import edu.byu.cs.tweeter.client.presenter.paged.FollowersPresenter;
+import edu.byu.cs.tweeter.client.presenter.paged.PagedPresenter;
 import edu.byu.cs.tweeter.client.view.main.MainActivity;
 import edu.byu.cs.tweeter.model.domain.User;
 
 /**
  * Implements the "Followers" tab.
  */
-public class FollowersFragment extends Fragment implements FollowersPresenter.FollowersView
+public class FollowersFragment extends Fragment implements PagedPresenter.PagedView<User>
 {
     private FollowersPresenter presenter;
     private static final String LOG_TAG = "FollowersFragment";
@@ -277,7 +278,7 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Fo
                 isLoading = true;
                 addLoadingFooter();
 
-                presenter.getFollowers(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastFollower);
+                presenter.getPage(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastFollower);
             }
         }
 

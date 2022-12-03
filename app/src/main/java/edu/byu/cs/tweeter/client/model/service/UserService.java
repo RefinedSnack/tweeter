@@ -1,15 +1,12 @@
 package edu.byu.cs.tweeter.client.model.service;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-
-import androidx.annotation.NonNull;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import edu.byu.cs.tweeter.client.cache.Cache;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.AuthenticateTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetUserTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.LoginTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.RegisterTask;
@@ -25,6 +22,11 @@ public class UserService
         void handleSuccess(User user, AuthToken token);
     }
 
+    public interface GetUserObserver extends ServiceObserver
+    {
+        void handleSuccess(User user);
+    }
+
     private class AuthenticationHandler extends BackgroundTaskHandler<AuthenticationObserver>
     {
         public AuthenticationHandler(AuthenticationObserver observer)
@@ -35,54 +37,29 @@ public class UserService
         @Override
         protected void handleSuccessMessage(AuthenticationObserver observer, Bundle data)
         {
-            User loggedInUser = (User) data.getSerializable(LoginTask.USER_KEY);
-            AuthToken authToken = (AuthToken) data.getSerializable(LoginTask.AUTH_TOKEN_KEY);
+            User loggedInUser = (User) data.getSerializable(AuthenticateTask.USER_KEY);
+            AuthToken authToken = (AuthToken) data.getSerializable(AuthenticateTask.AUTH_TOKEN_KEY);
 
             // Cache user session information
             Cache.getInstance().setCurrUser(loggedInUser);
             Cache.getInstance().setCurrUserAuthToken(authToken);
             observer.handleSuccess(loggedInUser, authToken);
         }
-
     }
 
-    public interface GetUserObserver
+    private class GetUserHandler extends BackgroundTaskHandler<GetUserObserver>
     {
-        void handleGetUserSuccess(User user);
-
-        void handleGetUserFailure(String message);
-
-        void handleGetUserThrewAnException(Exception ex);
-    }
-
-
-
-    private class GetUserHandler extends Handler
-    {
-        GetUserObserver observer;
 
         public GetUserHandler(GetUserObserver observer)
         {
-            this.observer = observer;
+            super(observer);
         }
 
         @Override
-        public void handleMessage(@NonNull Message msg)
+        protected void handleSuccessMessage(GetUserObserver observer, Bundle data)
         {
-            boolean success = msg.getData().getBoolean(GetUserTask.SUCCESS_KEY);
-            if (success)
-            {
-                User user = (User) msg.getData().getSerializable(GetUserTask.USER_KEY);
-                observer.handleGetUserSuccess(user);
-            } else if (msg.getData().containsKey(GetUserTask.MESSAGE_KEY))
-            {
-                String message = msg.getData().getString(GetUserTask.MESSAGE_KEY);
-                observer.handleGetUserFailure(message);
-            } else if (msg.getData().containsKey(GetUserTask.EXCEPTION_KEY))
-            {
-                Exception ex = (Exception) msg.getData().getSerializable(GetUserTask.EXCEPTION_KEY);
-                observer.handleGetUserThrewAnException(ex);
-            }
+            User user = (User) data.getSerializable(GetUserTask.USER_KEY);
+            observer.handleSuccess(user);
         }
     }
 

@@ -32,7 +32,8 @@ import java.util.List;
 
 import edu.byu.cs.client.R;
 import edu.byu.cs.tweeter.client.cache.Cache;
-import edu.byu.cs.tweeter.client.presenter.StoryPresenter;
+import edu.byu.cs.tweeter.client.presenter.paged.PagedPresenter;
+import edu.byu.cs.tweeter.client.presenter.paged.StoryPresenter;
 import edu.byu.cs.tweeter.client.view.main.MainActivity;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
@@ -40,7 +41,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 /**
  * Implements the "Story" tab.
  */
-public class StoryFragment extends Fragment implements StoryPresenter.StoryView
+public class StoryFragment extends Fragment implements PagedPresenter.PagedView<Status>
 {
     private StoryPresenter presenter;
     private static final String LOG_TAG = "StoryFragment";
@@ -327,7 +328,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
             {   // This guard is important for avoiding a race condition in the scrolling code.
                 isLoading = true;
                 addLoadingFooter();
-                presenter.getStory(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastStatus);
+                presenter.getPage(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastStatus);
             }
         }
 

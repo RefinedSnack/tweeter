@@ -1,0 +1,95 @@
+    public interface StoryView
+    {
+        void displayInfoMessage(String message);
+
+        void navigateToUser(User user);
+
+        void setLoading(boolean value);
+
+        void removeLoadingFooter();
+
+        void setLast(Status last);
+
+        void addItems(List<Status> toAdd);
+
+        void setHasMorePages(boolean value);
+        void addLoadingFooter();
+    }
+
+        public interface AuthenticationView extends Presenter.view
+        {
+            void displayInfoMessage(String message);
+
+            void displayErrorMessage(String message);
+
+            void clearErrorMessage();
+
+            void clearInfoMessage();
+
+            void navigateToUser(User user);
+        }
+
+            public interface FollowersView
+            {
+                void displayInfoMessage(String message);
+
+                void navigateToUser(User user);
+
+                void setLoading(boolean value);
+
+                void removeLoadingFooter();
+
+                void setLast(User last);
+
+                void addItems(List<User> toAdd);
+
+                void setHasMorePages(boolean value);
+
+                void addLoadingFooter();
+            }
+
+                public interface FollowingView
+                {
+                    void displayInfoMessage(String message);
+
+                    void navigateToUser(User user);
+
+                    void setLoading(boolean value);
+
+                    void removeLoadingFooter();
+
+                    void setLast(User last);
+
+                    void addItems(List<User> toAdd);
+
+                    void setHasMorePages(boolean value);
+
+                    void addLoadingFooter();
+                }
+
+                    public interface MainView
+                    {
+                        void navigateToUser(User user);
+
+                        void displayPostingInfoMessage(String message);
+
+                        void clearPostingInfoMessage();
+
+                        void displayLogoutInfoMessage(String message);
+
+                        void clearLogoutInfoMessage();
+
+                        void displayInfoMessage(String message);
+
+                        void updateSelectedUserFollowingAndFollowers();
+
+                        void updateFollowButton(boolean isFollowing);
+
+                        void setFollowButtonEnabled(boolean value);
+
+                        void setFolloweeCount(int count);
+
+                        void setFollowerCount(int count);
+
+                        void logoutUser();
+                    }

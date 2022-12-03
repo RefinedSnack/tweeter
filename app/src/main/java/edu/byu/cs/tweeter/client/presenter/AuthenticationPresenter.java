@@ -4,27 +4,21 @@ import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public abstract class AuthenticationPresenter
+public abstract class AuthenticationPresenter extends Presenter<AuthenticationPresenter.AuthenticationView>
 {
-    public interface AuthenticationView
+    public interface AuthenticationView extends Presenter.view
     {
         void displayErrorMessage(String message);
 
         void clearErrorMessage();
 
-        void displayInfoMessage(String message);
-
         void clearInfoMessage();
-
-        void navigateToUser(User user);
     }
-
-    protected AuthenticationView view;
 
 
     public AuthenticationPresenter(AuthenticationView view)
     {
-        this.view = view;
+        super(view);
     }
 
     protected class AuthenticationObserver implements UserService.AuthenticationObserver
