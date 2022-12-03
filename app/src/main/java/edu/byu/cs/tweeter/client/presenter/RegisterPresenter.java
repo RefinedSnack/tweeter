@@ -1,26 +1,12 @@
 package edu.byu.cs.tweeter.client.presenter;
 
 import edu.byu.cs.tweeter.client.model.service.UserService;
-import edu.byu.cs.tweeter.model.domain.AuthToken;
-import edu.byu.cs.tweeter.model.domain.User;
 
-public class RegisterPresenter implements UserService.RegisterObserver
+public class RegisterPresenter extends AuthenticationPresenter
 {
-    public interface RegisterView
+    public RegisterPresenter(AuthenticationView view)
     {
-        void displayErrorMessage(String message);
-        void clearErrorMessage();
-
-        void displayInfoMessage(String message);
-        void clearInfoMessage();
-
-        void navigateToUser(User user);
-    }
-    private RegisterView view;
-
-    public RegisterPresenter(RegisterView view)
-    {
-        this.view = view;
+        super(view);
     }
 
     public void register(String firstName, String lastName, String alias, String password, String imageBytesBase64)
@@ -37,31 +23,8 @@ public class RegisterPresenter implements UserService.RegisterObserver
                                    alias,
                                    password,
                                    imageBytesBase64,
-                           this);
+                           new AuthenticationObserver());
     }
-
-    @Override
-    public void handleRegisterSuccess(User user, AuthToken authToken)
-    {
-        view.clearInfoMessage();
-        view.clearErrorMessage();
-
-        view.displayInfoMessage("Hello " + user.getName());
-        view.navigateToUser(user);
-    }
-
-    @Override
-    public void handleRegisterFailure(String message)
-    {
-        view.displayInfoMessage("Failed to register: " + message);
-    }
-
-    @Override
-    public void handleRegisterThrewAnException(Exception ex)
-    {
-        view.displayInfoMessage("Failed to register because of exception: " + ex.getMessage().toString());
-    }
-
 
     private String validateRegistration(String firstName, String lastName, String alias, String password, String imageBytesBase64) {
         if (firstName.length() == 0) {
@@ -89,4 +52,9 @@ public class RegisterPresenter implements UserService.RegisterObserver
         return null;
     }
 
+    @Override
+    protected String getMessagePrefix()
+    {
+        return "register";
+    }
 }
