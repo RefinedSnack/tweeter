@@ -2,7 +2,6 @@ package edu.byu.cs.tweeter.client.model.service.paged;
 
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFeedTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.PagedTask;
-import edu.byu.cs.tweeter.client.model.service.paged.PagedService;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;

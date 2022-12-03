@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
     @Override
     public void onStatusPosted(String post)
     {
-        presenter.postStatus(Cache.getInstance().getCurrUserAuthToken(), post, Cache.getInstance().getCurrUser());
+        presenter.postStatus(Cache.getInstance().getCurrUserAuthToken(), post);
     }
 
     @Override
