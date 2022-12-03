@@ -62,7 +62,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
      * @param user the user whose story is being displayed (not necessarily the logged-in user).
      * @return the fragment.
      */
-    public static StoryFragment newInstance(User user) {
+    public static StoryFragment newInstance(User user)
+    {
         StoryFragment fragment = new StoryFragment();
 
         Bundle args = new Bundle(1);
@@ -74,7 +75,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState)
+    {
         presenter = new StoryPresenter(this);
         View view = inflater.inflate(R.layout.fragment_story, container, false);
 
@@ -97,7 +99,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
     /**
      * The ViewHolder for the RecyclerView that displays the story data.
      */
-    private class StoryHolder extends RecyclerView.ViewHolder {
+    private class StoryHolder extends RecyclerView.ViewHolder
+    {
 
         private final ImageView userImage;
         private final TextView userAlias;
@@ -110,7 +113,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
          *
          * @param itemView the view on which the status will be displayed.
          */
-        StoryHolder(@NonNull View itemView) {
+        StoryHolder(@NonNull View itemView)
+        {
             super(itemView);
 
             userImage = itemView.findViewById(R.id.statusImage);
@@ -118,10 +122,12 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
             userName = itemView.findViewById(R.id.statusName);
             post = itemView.findViewById(R.id.statusPost);
             datetime = itemView.findViewById(R.id.statusDatetime);
-            
-            itemView.setOnClickListener(new View.OnClickListener() {
+
+            itemView.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View view) {
+                public void onClick(View view)
+                {
                     presenter.getUser(Cache.getInstance().getCurrUserAuthToken(), userAlias.getText().toString());
                 }
             });
@@ -132,7 +138,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
          *
          * @param status the status.
          */
-        void bindStatus(Status status) {
+        void bindStatus(Status status)
+        {
             Picasso.get().load(status.getUser().getImageUrl()).into(userImage);
             userAlias.setText(status.getUser().getAlias());
             userName.setText(status.getUser().getName());
@@ -142,10 +149,13 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
             SpannableString spannableString = new SpannableString(status.getPost());
 
 
-            for (String mention : status.getMentions()) {
-                ClickableSpan span = new ClickableSpan() {
+            for (String mention : status.getMentions())
+            {
+                ClickableSpan span = new ClickableSpan()
+                {
                     @Override
-                    public void onClick(@NonNull View widget) {
+                    public void onClick(@NonNull View widget)
+                    {
                         TextView clickedMention = (TextView) widget;
                         Spanned s = (Spanned) clickedMention.getText();
                         int start = s.getSpanStart(this);
@@ -157,7 +167,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
                     }
 
                     @Override
-                    public void updateDrawState(@NotNull TextPaint ds) {
+                    public void updateDrawState(@NotNull TextPaint ds)
+                    {
                         super.updateDrawState(ds);
                         ds.setColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
                         ds.setUnderlineText(false);
@@ -168,7 +179,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
                 spannableString.setSpan(span, startIndex, (startIndex + mention.length()), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
 
-            for (String url : status.getUrls()) {
+            for (String url : status.getUrls())
+            {
                 int startIndex = status.getPost().indexOf(url);
                 spannableString.setSpan(new URLSpan(url), startIndex, (startIndex + url.length()), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
@@ -182,7 +194,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
     /**
      * The adapter for the RecyclerView that displays the story data.
      */
-    private class StoryRecyclerViewAdapter extends RecyclerView.Adapter<StoryHolder> {
+    private class StoryRecyclerViewAdapter extends RecyclerView.Adapter<StoryHolder>
+    {
 
         private final List<Status> story = new ArrayList<>();
         private Status lastStatus;
@@ -193,7 +206,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
         /**
          * Creates an instance and loads the first page of story data.
          */
-        StoryRecyclerViewAdapter() {
+        StoryRecyclerViewAdapter()
+        {
             loadMoreItems();
         }
 
@@ -203,7 +217,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
          *
          * @param newStory the statuses to add.
          */
-        void addItems(List<Status> newStory) {
+        void addItems(List<Status> newStory)
+        {
             int startInsertPosition = story.size();
             story.addAll(newStory);
             this.notifyItemRangeInserted(startInsertPosition, newStory.size());
@@ -215,7 +230,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
          *
          * @param status the status to add.
          */
-        void addItem(Status status) {
+        void addItem(Status status)
+        {
             story.add(status);
             this.notifyItemInserted(story.size() - 1);
         }
@@ -226,7 +242,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
          *
          * @param status the status to remove.
          */
-        void removeItem(Status status) {
+        void removeItem(Status status)
+        {
             int position = story.indexOf(status);
             story.remove(position);
             this.notifyItemRemoved(position);
@@ -242,14 +259,17 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
          */
         @NonNull
         @Override
-        public StoryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public StoryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+        {
             LayoutInflater layoutInflater = LayoutInflater.from(StoryFragment.this.getContext());
             View view;
 
-            if (viewType == LOADING_DATA_VIEW) {
+            if (viewType == LOADING_DATA_VIEW)
+            {
                 view = layoutInflater.inflate(R.layout.loading_row, parent, false);
 
-            } else {
+            } else
+            {
                 view = layoutInflater.inflate(R.layout.status_row, parent, false);
             }
 
@@ -265,8 +285,10 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
          *                    bound.
          */
         @Override
-        public void onBindViewHolder(@NonNull StoryHolder storyHolder, int position) {
-            if (!isLoading) {
+        public void onBindViewHolder(@NonNull StoryHolder storyHolder, int position)
+        {
+            if (!isLoading)
+            {
                 storyHolder.bindStatus(story.get(position));
             }
         }
@@ -277,7 +299,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
          * @return the number of statuses available for display.
          */
         @Override
-        public int getItemCount() {
+        public int getItemCount()
+        {
             return story.size();
         }
 
@@ -289,7 +312,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
          * @return the view type.
          */
         @Override
-        public int getItemViewType(int position) {
+        public int getItemViewType(int position)
+        {
             return (position == story.size() - 1 && isLoading) ? LOADING_DATA_VIEW : ITEM_VIEW;
         }
 
@@ -297,8 +321,10 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
          * Causes the Adapter to display a loading footer and make a request to get more story
          * data.
          */
-        void loadMoreItems() {
-            if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
+        void loadMoreItems()
+        {
+            if (!isLoading)
+            {   // This guard is important for avoiding a race condition in the scrolling code.
                 isLoading = true;
                 addLoadingFooter();
                 presenter.getStory(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastStatus);
@@ -309,10 +335,13 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
          * Adds a dummy status to the list of statuses so the RecyclerView will display a view (the
          * loading footer view) at the bottom of the list.
          */
-        private void addLoadingFooter() {
-            addItem(new Status("Dummy Post", new User("firstName", "lastName", "@coolAlias"), "2020-10-31 00:00:00", new ArrayList<String>() {{
+        private void addLoadingFooter()
+        {
+            addItem(new Status("Dummy Post", new User("firstName", "lastName", "@coolAlias"), "2020-10-31 00:00:00", new ArrayList<String>()
+            {{
                 add("https://youtube.com");
-            }}, new ArrayList<String>() {{
+            }}, new ArrayList<String>()
+            {{
                 add("@Dude1");
             }}));
         }
@@ -321,7 +350,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
          * Removes the dummy status from the list of statuses so the RecyclerView will stop displaying
          * the loading footer at the bottom of the list.
          */
-        private void removeLoadingFooter() {
+        private void removeLoadingFooter()
+        {
             removeItem(story.get(story.size() - 1));
         }
     }
@@ -330,7 +360,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
      * A scroll listener that detects when the user has scrolled to the bottom of the currently
      * available data.
      */
-    private class StoryRecyclerViewPaginationScrollListener extends RecyclerView.OnScrollListener {
+    private class StoryRecyclerViewPaginationScrollListener extends RecyclerView.OnScrollListener
+    {
 
         private final LinearLayoutManager layoutManager;
 
@@ -339,7 +370,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
          *
          * @param layoutManager the layout manager being used by the RecyclerView.
          */
-        StoryRecyclerViewPaginationScrollListener(LinearLayoutManager layoutManager) {
+        StoryRecyclerViewPaginationScrollListener(LinearLayoutManager layoutManager)
+        {
             this.layoutManager = layoutManager;
         }
 
@@ -353,26 +385,29 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
          * @param dy           the amount of vertical scroll.
          */
         @Override
-        public void onScrolled(@NotNull RecyclerView recyclerView, int dx, int dy) {
+        public void onScrolled(@NotNull RecyclerView recyclerView, int dx, int dy)
+        {
             super.onScrolled(recyclerView, dx, dy);
 
             int visibleItemCount = layoutManager.getChildCount();
             int totalItemCount = layoutManager.getItemCount();
             int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
 
-            if (!storyRecyclerViewAdapter.isLoading && storyRecyclerViewAdapter.hasMorePages) {
+            if (!storyRecyclerViewAdapter.isLoading && storyRecyclerViewAdapter.hasMorePages)
+            {
                 if ((visibleItemCount + firstVisibleItemPosition) >=
-                        totalItemCount && firstVisibleItemPosition >= 0) {
+                        totalItemCount && firstVisibleItemPosition >= 0)
+                {
                     // Run this code later on the UI thread
                     final Handler handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(() -> {
-                            storyRecyclerViewAdapter.loadMoreItems();
+                    handler.postDelayed(() ->
+                    {
+                        storyRecyclerViewAdapter.loadMoreItems();
                     }, 0);
                 }
             }
         }
     }
-
 
 
     @Override
@@ -417,5 +452,11 @@ public class StoryFragment extends Fragment implements StoryPresenter.StoryView
     public void setHasMorePages(boolean value)
     {
         storyRecyclerViewAdapter.hasMorePages = value;
+    }
+
+    @Override
+    public void addLoadingFooter()
+    {
+        storyRecyclerViewAdapter.addLoadingFooter();
     }
 }

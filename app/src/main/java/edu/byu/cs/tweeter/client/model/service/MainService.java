@@ -33,7 +33,7 @@ public class MainService
 
     public void postStatus(AuthToken authToken, Status newStatus, PostStatusObserver observer)
     {
-        PostStatusTask statusTask = new PostStatusTask(Cache.getInstance().getCurrUserAuthToken(),
+        PostStatusTask statusTask = new PostStatusTask(authToken,
                 newStatus, new PostStatusHandler(observer));
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(statusTask);

@@ -25,6 +25,8 @@ public class FeedPresenter implements UserService.GetUserObserver, FeedService.G
         void addItems(List<Status> toAdd);
 
         void setHasMorePages(boolean value);
+
+        void addLoadingFooter();
     }
 
     private FeedView view;

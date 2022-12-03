@@ -25,6 +25,7 @@ public class StoryPresenter implements UserService.GetUserObserver, StoryService
         void addItems(List<Status> toAdd);
 
         void setHasMorePages(boolean value);
+        void addLoadingFooter();
     }
 
     private StoryView view;

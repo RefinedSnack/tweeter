@@ -452,4 +452,10 @@ public class FeedFragment extends Fragment implements FeedPresenter.FeedView
         feedRecyclerViewAdapter.hasMorePages = value;
     }
 
+    @Override
+    public void addLoadingFooter()
+    {
+        feedRecyclerViewAdapter.addLoadingFooter();
+    }
+
 }

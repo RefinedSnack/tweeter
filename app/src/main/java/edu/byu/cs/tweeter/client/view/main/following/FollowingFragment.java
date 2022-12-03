@@ -392,4 +392,10 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Fo
         followingRecyclerViewAdapter.hasMorePages = value;
     }
 
+    @Override
+    public void addLoadingFooter()
+    {
+        followingRecyclerViewAdapter.addLoadingFooter();
+    }
+
 }

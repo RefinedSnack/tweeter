@@ -24,6 +24,8 @@ public class FollowersPresenter implements UserService.GetUserObserver, Follower
         void addItems(List<User> toAdd);
 
         void setHasMorePages(boolean value);
+
+        void addLoadingFooter();
     }
 
     private FollowersView view;

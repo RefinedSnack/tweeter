@@ -24,6 +24,8 @@ public class FollowingPresenter implements UserService.GetUserObserver, Followin
         void addItems(List<User> toAdd);
 
         void setHasMorePages(boolean value);
+
+        void addLoadingFooter();
     }
 
     private FollowingView view;
