@@ -28,7 +28,6 @@ import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.presenter.paged.FollowingPresenter;
 import edu.byu.cs.tweeter.client.presenter.paged.PagedPresenter;
 import edu.byu.cs.tweeter.client.view.main.MainActivity;
-import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
 /**
@@ -273,7 +272,7 @@ public class FollowingFragment extends Fragment implements PagedPresenter.PagedV
                 isLoading = true;
                 addLoadingFooter();
 
-                presenter.getFollowing(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastFollowee);
+                presenter.getPage(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastFollowee);
             }
         }
 
