@@ -18,7 +18,7 @@ public abstract class BackgroundTaskHandler<T extends ServiceObserver> extends H
 
     public BackgroundTaskHandler(T observer) {
         super(Looper.getMainLooper());
-        this.observer = new WeakReference<T>(observer);
+        this.observer = new WeakReference<>(observer);
     }
 
     @Override
