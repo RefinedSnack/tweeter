@@ -29,22 +29,22 @@ public abstract class PagedService<ITEM>
 
     abstract protected PagedTask getPageTask(AuthToken authToken, User user, int pageSize, ITEM last, GetPagedObserver<ITEM> observer);
 
-    protected class GetPagedHandler<ITEM> extends BackgroundTaskHandler<GetPagedObserver<ITEM>>
+    protected class GetPagedHandler<PAGE_ITEM> extends BackgroundTaskHandler<GetPagedObserver<PAGE_ITEM>>
     {
-        public GetPagedHandler(GetPagedObserver<ITEM> observer)
+        public GetPagedHandler(GetPagedObserver<PAGE_ITEM> observer)
         {
             super(observer);
         }
 
         @Override
-        protected void handleSuccessMessage(GetPagedObserver<ITEM> observer, Bundle data)
+        protected void handleSuccessMessage(GetPagedObserver<PAGE_ITEM> observer, Bundle data)
         {
             observer.handleLoading();
 
-            List<ITEM> toAdd = (List<ITEM>) data.getSerializable(PagedTask.ITEMS_KEY);
+            List<PAGE_ITEM> toAdd = (List<PAGE_ITEM>) data.getSerializable(PagedTask.ITEMS_KEY);
             Boolean hasMorePages = data.getBoolean(PagedTask.MORE_PAGES_KEY);
 
-            ITEM last = (toAdd.size() > 0) ? toAdd.get(toAdd.size() - 1) : null;
+            PAGE_ITEM last = (toAdd.size() > 0) ? toAdd.get(toAdd.size() - 1) : null;
 
             observer.handleSuccess(hasMorePages, last, toAdd);
         }
