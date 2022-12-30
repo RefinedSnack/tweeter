@@ -327,7 +327,7 @@ public class FeedFragment extends Fragment implements PagedPresenter.PagedView<S
                 isLoading = true;
                 addLoadingFooter();
 
-                presenter.getPage(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastStatus);
+                presenter.getPage(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE);
             }
         }
 
@@ -429,17 +429,6 @@ public class FeedFragment extends Fragment implements PagedPresenter.PagedView<S
         feedRecyclerViewAdapter.isLoading = value;
     }
 
-    @Override
-    public void removeLoadingFooter()
-    {
-        feedRecyclerViewAdapter.removeLoadingFooter();
-    }
-
-    @Override
-    public void setLast(Status last)
-    {
-        feedRecyclerViewAdapter.lastStatus = last;
-    }
 
     @Override
     public void addItems(List<Status> toAdd)
@@ -451,12 +440,6 @@ public class FeedFragment extends Fragment implements PagedPresenter.PagedView<S
     public void setHasMorePages(boolean value)
     {
         feedRecyclerViewAdapter.hasMorePages = value;
-    }
-
-    @Override
-    public void addLoadingFooter()
-    {
-        feedRecyclerViewAdapter.addLoadingFooter();
     }
 
 }

@@ -3,39 +3,34 @@ package edu.byu.cs.tweeter.client.presenter.paged;
 import java.util.List;
 
 import edu.byu.cs.tweeter.client.model.service.paged.PagedService;
-import edu.byu.cs.tweeter.client.presenter.GetUserPresenter;
+import edu.byu.cs.tweeter.client.presenter.NavigateToUserPresenter;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public abstract class PagedPresenter<ITEM> extends GetUserPresenter<PagedPresenter.PagedView>
+public abstract class PagedPresenter<ITEM> extends NavigateToUserPresenter<PagedPresenter.PagedView>
 {
-    public interface PagedView<ITEM> extends GetUserView
+    public interface PagedView<ITEM> extends NavigateToUserView
     {
         void setLoading(boolean value);
-
-        void removeLoadingFooter();
-
-        void setLast(ITEM last);
 
         void addItems(List<ITEM> toAdd);
 
         void setHasMorePages(boolean value);
-
-        void addLoadingFooter();
     }
 
+    protected ITEM last;
     public PagedPresenter(PagedView<ITEM> view)
     {
         super(view);
     }
 
-    protected class PagedObserver<ITEM> extends InfixErrorObserver implements PagedService.GetPagedObserver<ITEM>
+    protected class PagedObserver extends InfixErrorObserver implements PagedService.GetPagedObserver<ITEM>
     {
         @Override
-        public void handleSuccess(Boolean hasMorePages, ITEM last, List<ITEM> toAdd)
+        public void handleSuccess(Boolean hasMorePages, ITEM lastItem, List<ITEM> toAdd)
         {
             view.setHasMorePages(hasMorePages);
-            view.setLast(last);
+            last = lastItem;
             view.addItems(toAdd);
         }
 
@@ -49,10 +44,9 @@ public abstract class PagedPresenter<ITEM> extends GetUserPresenter<PagedPresent
         public void handleLoading()
         {
             view.setLoading(false);
-            view.removeLoadingFooter();
         }
     }
 
     protected abstract String getPagedMessageInfix();
-    public abstract void getPage(AuthToken authToken, User user, int pageSize, ITEM last);
+    public abstract void getPage(AuthToken authToken, User user, int pageSize);
 }

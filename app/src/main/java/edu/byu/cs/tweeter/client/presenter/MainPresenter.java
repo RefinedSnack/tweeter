@@ -13,9 +13,9 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class MainPresenter extends GetUserPresenter<MainPresenter.MainView>
+public class MainPresenter extends NavigateToUserPresenter<MainPresenter.MainView>
 {
-    public interface MainView extends GetUserView
+    public interface MainView extends NavigateToUserView
     {
         void displayPostingInfoMessage(String message);
 
@@ -53,7 +53,16 @@ public class MainPresenter extends GetUserPresenter<MainPresenter.MainView>
             return;
         }
         Status newStatus = new Status(post, Cache.getInstance().getCurrUser(), postTime, parseURLs(post), parseMentions(post));
-        new MainService().postStatus(authToken, newStatus, new PostStatusObserver());
+        mainServiceFactory().postStatus(authToken, newStatus, PostStatusObserverFactory());
+    }
+    public MainService mainServiceFactory()
+    {
+        return new MainService();
+    }
+
+    public PostStatusObserver PostStatusObserverFactory()
+    {
+        return new PostStatusObserver();
     }
 
     private class PostStatusObserver extends InfixErrorObserver implements MainService.SimpleServiceObserver
@@ -76,7 +85,7 @@ public class MainPresenter extends GetUserPresenter<MainPresenter.MainView>
     public void unfollow(AuthToken authToken, User user)
     {
         view.setFollowButtonEnabled(false);
-        new MainService().unfollow(authToken, user, new UnfollowObserver());
+        mainServiceFactory().unfollow(authToken, user, new UnfollowObserver());
         view.displayInfoMessage("Removing " + user.getName() + "...");
     }
 
@@ -84,7 +93,7 @@ public class MainPresenter extends GetUserPresenter<MainPresenter.MainView>
     public void follow(AuthToken authToken, User user)
     {
         view.setFollowButtonEnabled(false);
-        new MainService().follow(authToken, user, new FollowObserver());
+        mainServiceFactory().follow(authToken, user, new FollowObserver());
         view.displayInfoMessage("Adding " + user.getName() + "...");
     }
 
@@ -155,7 +164,7 @@ public class MainPresenter extends GetUserPresenter<MainPresenter.MainView>
 
     public void isFollowing(AuthToken authToken, User currUser, User selectedUser)
     {
-        new MainService().IsFollower(authToken, currUser, selectedUser, new IsFollowingObserver());
+        mainServiceFactory().IsFollower(authToken, currUser, selectedUser, new IsFollowingObserver());
     }
 
     private class IsFollowingObserver extends InfixErrorObserver implements MainService.IsFollowerObserver
@@ -175,7 +184,7 @@ public class MainPresenter extends GetUserPresenter<MainPresenter.MainView>
 
     public void getFollowCounts(AuthToken currUserAuthToken, User selectedUser)
     {
-        new MainService().getFollowCounts(currUserAuthToken, selectedUser, new FollowingObserver(), new FollowersObserver());
+        mainServiceFactory().getFollowCounts(currUserAuthToken, selectedUser, new FollowingObserver(), new FollowersObserver());
     }
 
     private class FollowingObserver extends InfixErrorObserver implements MainService.GetCountObserver
@@ -211,7 +220,7 @@ public class MainPresenter extends GetUserPresenter<MainPresenter.MainView>
     public void logout(AuthToken authToken)
     {
         view.displayLogoutInfoMessage("Logging Out...");
-        new MainService().logout(authToken, new LogoutObserver());
+        mainServiceFactory().logout(authToken, new LogoutObserver());
     }
 
     private class LogoutObserver extends InfixErrorObserver implements MainService.SimpleServiceObserver

@@ -4,9 +4,9 @@ import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public abstract class AuthenticationPresenter extends GetUserPresenter<AuthenticationPresenter.AuthenticationView>
+public abstract class AuthenticationPresenter extends NavigateToUserPresenter<AuthenticationPresenter.AuthenticationView>
 {
-    public interface AuthenticationView extends GetUserView
+    public interface AuthenticationView extends NavigateToUserView
     {
         void displayErrorMessage(String message);
 

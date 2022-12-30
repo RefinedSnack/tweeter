@@ -1,18 +1,17 @@
 package edu.byu.cs.tweeter.client.presenter;
 
 import edu.byu.cs.tweeter.client.model.service.UserService;
-import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public abstract class GetUserPresenter<VIEW extends GetUserPresenter.GetUserView> extends Presenter<VIEW>
+public abstract class NavigateToUserPresenter<VIEW extends NavigateToUserPresenter.NavigateToUserView> extends Presenter<VIEW>
 {
-    public interface GetUserView extends Presenter.View
+    public interface NavigateToUserView extends Presenter.View
     {
         void navigateToUser(User user);
     }
 
-    public GetUserPresenter(VIEW view)
+    public NavigateToUserPresenter(VIEW view)
     {
         super(view);
     }

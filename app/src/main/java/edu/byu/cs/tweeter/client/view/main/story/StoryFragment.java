@@ -328,7 +328,7 @@ public class StoryFragment extends Fragment implements PagedPresenter.PagedView<
             {   // This guard is important for avoiding a race condition in the scrolling code.
                 isLoading = true;
                 addLoadingFooter();
-                presenter.getPage(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastStatus);
+                presenter.getPage(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE);
             }
         }
 
@@ -432,18 +432,6 @@ public class StoryFragment extends Fragment implements PagedPresenter.PagedView<
     }
 
     @Override
-    public void removeLoadingFooter()
-    {
-        storyRecyclerViewAdapter.removeLoadingFooter();
-    }
-
-    @Override
-    public void setLast(Status last)
-    {
-        storyRecyclerViewAdapter.lastStatus = last;
-    }
-
-    @Override
     public void addItems(List<Status> toAdd)
     {
         storyRecyclerViewAdapter.addItems(toAdd);
@@ -453,11 +441,5 @@ public class StoryFragment extends Fragment implements PagedPresenter.PagedView<
     public void setHasMorePages(boolean value)
     {
         storyRecyclerViewAdapter.hasMorePages = value;
-    }
-
-    @Override
-    public void addLoadingFooter()
-    {
-        storyRecyclerViewAdapter.addLoadingFooter();
     }
 }

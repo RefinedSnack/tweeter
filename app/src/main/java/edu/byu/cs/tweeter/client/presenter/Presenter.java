@@ -2,7 +2,7 @@ package edu.byu.cs.tweeter.client.presenter;
 
 import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 
-public class Presenter<VIEW extends Presenter.View>
+public abstract class Presenter<VIEW extends Presenter.View>
 {
     public interface View
     {

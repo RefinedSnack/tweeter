@@ -1,95 +1,24 @@
-    public interface StoryView
-    {
-        void displayInfoMessage(String message);
 
-        void navigateToUser(User user);
+/*
 
-        void setLoading(boolean value);
+When a user clicks the "POST STATUS" button, the View should call a "post status" operation on a
+Presenter that posts the status to the server
+(although there isn't actually a server yet).
+Next, the Presenter's "post status" operation should:
 
-        void removeLoadingFooter();
 
-        void setLast(Status last);
+1. Instruct the View to display a "Posting Status..." message.
+2. Create a Status object and call a Service to send it to the server.
+3. Instruct the View to display one of the following messages telling the user the outcome of the post operation:
+    a. "Successfully Posted!"
+    b. "Failed to post status: <ERROR MESSAGE>"
+    c. "Failed to post status because of exception: <EXCEPTION MESSAGE>"
 
-        void addItems(List<Status> toAdd);
+Using JUnit and Mockito, write automated UNIT tests to verify the following:
 
-        void setHasMorePages(boolean value);
-        void addLoadingFooter();
-    }
+The Presenter's "post status" operation works correctly in all three of the outcomes listed above
+(succeeded, failed, failed due to exception).
+All parameters passed by the Presenter to the Service's "post status" operation are correct.
 
-        public interface AuthenticationView extends Presenter.view
-        {
-            void displayInfoMessage(String message);
-
-            void displayErrorMessage(String message);
-
-            void clearErrorMessage();
-
-            void clearInfoMessage();
-
-            void navigateToUser(User user);
-        }
-
-            public interface FollowersView
-            {
-                void displayInfoMessage(String message);
-
-                void navigateToUser(User user);
-
-                void setLoading(boolean value);
-
-                void removeLoadingFooter();
-
-                void setLast(User last);
-
-                void addItems(List<User> toAdd);
-
-                void setHasMorePages(boolean value);
-
-                void addLoadingFooter();
-            }
-
-                public interface FollowingView
-                {
-                    void displayInfoMessage(String message);
-
-                    void navigateToUser(User user);
-
-                    void setLoading(boolean value);
-
-                    void removeLoadingFooter();
-
-                    void setLast(User last);
-
-                    void addItems(List<User> toAdd);
-
-                    void setHasMorePages(boolean value);
-
-                    void addLoadingFooter();
-                }
-
-                    public interface MainView
-                    {
-                        void navigateToUser(User user);
-
-                        void displayPostingInfoMessage(String message);
-
-                        void clearPostingInfoMessage();
-
-                        void displayLogoutInfoMessage(String message);
-
-                        void clearLogoutInfoMessage();
-
-                        void displayInfoMessage(String message);
-
-                        void updateSelectedUserFollowingAndFollowers();
-
-                        void updateFollowButton(boolean isFollowing);
-
-                        void setFollowButtonEnabled(boolean value);
-
-                        void setFolloweeCount(int count);
-
-                        void setFollowerCount(int count);
-
-                        void logoutUser();
-                    }
+This will require you to create mocks/spies for the View, Presenter, and Service.
+ */

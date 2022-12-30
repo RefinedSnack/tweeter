@@ -272,7 +272,7 @@ public class FollowingFragment extends Fragment implements PagedPresenter.PagedV
                 isLoading = true;
                 addLoadingFooter();
 
-                presenter.getPage(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastFollowee);
+                presenter.getPage(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE);
             }
         }
 
@@ -369,17 +369,6 @@ public class FollowingFragment extends Fragment implements PagedPresenter.PagedV
         followingRecyclerViewAdapter.isLoading = value;
     }
 
-    @Override
-    public void removeLoadingFooter()
-    {
-        followingRecyclerViewAdapter.removeLoadingFooter();
-    }
-
-    @Override
-    public void setLast(User last)
-    {
-        followingRecyclerViewAdapter.lastFollowee = last;
-    }
 
     @Override
     public void addItems(List<User> toAdd)
@@ -391,12 +380,6 @@ public class FollowingFragment extends Fragment implements PagedPresenter.PagedV
     public void setHasMorePages(boolean value)
     {
         followingRecyclerViewAdapter.hasMorePages = value;
-    }
-
-    @Override
-    public void addLoadingFooter()
-    {
-        followingRecyclerViewAdapter.addLoadingFooter();
     }
 
 }
