@@ -388,4 +388,10 @@ public class FollowersFragment extends Fragment implements PagedPresenter.PagedV
     {
         followersRecyclerViewAdapter.hasMorePages = value;
     }
+
+    @Override
+    public void removeLoadingFooter()
+    {
+        followersRecyclerViewAdapter.removeLoadingFooter();
+    }
 }

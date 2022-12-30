@@ -16,6 +16,8 @@ public abstract class PagedPresenter<ITEM> extends NavigateToUserPresenter<Paged
         void addItems(List<ITEM> toAdd);
 
         void setHasMorePages(boolean value);
+
+        void removeLoadingFooter();
     }
 
     protected ITEM last;
@@ -44,6 +46,7 @@ public abstract class PagedPresenter<ITEM> extends NavigateToUserPresenter<Paged
         public void handleLoading()
         {
             view.setLoading(false);
+            view.removeLoadingFooter();
         }
     }
 

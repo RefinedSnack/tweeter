@@ -442,4 +442,10 @@ public class StoryFragment extends Fragment implements PagedPresenter.PagedView<
     {
         storyRecyclerViewAdapter.hasMorePages = value;
     }
+
+    @Override
+    public void removeLoadingFooter()
+    {
+        storyRecyclerViewAdapter.removeLoadingFooter();
+    }
 }

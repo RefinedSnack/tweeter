@@ -382,4 +382,10 @@ public class FollowingFragment extends Fragment implements PagedPresenter.PagedV
         followingRecyclerViewAdapter.hasMorePages = value;
     }
 
+    @Override
+    public void removeLoadingFooter()
+    {
+        followingRecyclerViewAdapter.removeLoadingFooter();
+    }
+
 }

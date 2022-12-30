@@ -442,4 +442,10 @@ public class FeedFragment extends Fragment implements PagedPresenter.PagedView<S
         feedRecyclerViewAdapter.hasMorePages = value;
     }
 
+    @Override
+    public void removeLoadingFooter()
+    {
+        feedRecyclerViewAdapter.removeLoadingFooter();
+    }
+
 }
