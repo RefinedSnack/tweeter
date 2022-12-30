@@ -1,0 +1,19 @@
+@startuml
+abstract class edu.byu.cs.tweeter.client.model.service.paged.PagedService {
++ void getPage(AuthToken,User,int,ITEM,GetPagedObserver<ITEM>)
+# {abstract}PagedTask getPageTask(AuthToken,User,int,ITEM,GetPagedObserver<ITEM>)
+}
+interface edu.byu.cs.tweeter.client.model.service.paged.PagedService.GetPagedObserver {
+~ void handleSuccess(Boolean,ITEM,List<ITEM>)
+~ void handleLoading()
+}
+class edu.byu.cs.tweeter.client.model.service.paged.PagedService.GetPagedHandler {
+# void handleSuccessMessage(GetPagedObserver<PAGE_ITEM>,Bundle)
+}
+
+
+edu.byu.cs.tweeter.client.model.service.paged.PagedService +.. edu.byu.cs.tweeter.client.model.service.paged.PagedService.GetPagedObserver
+edu.byu.cs.tweeter.client.model.service.paged.ServiceObserver <|-- edu.byu.cs.tweeter.client.model.service.paged.PagedService.GetPagedObserver
+edu.byu.cs.tweeter.client.model.service.paged.PagedService +.. edu.byu.cs.tweeter.client.model.service.paged.PagedService.GetPagedHandler
+edu.byu.cs.tweeter.client.model.service.paged.BackgroundTaskHandler <|-- edu.byu.cs.tweeter.client.model.service.paged.PagedService.GetPagedHandler
+@enduml
