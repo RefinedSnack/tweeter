@@ -10,7 +10,7 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.FollowTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetCountTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFollowersCountTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFollowingCountTask;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.IsFollowerTask;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.IsFollowing;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.LogoutTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.PostStatusTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.UnfollowTask;
@@ -61,8 +61,8 @@ public class MainService
         @Override
         protected void handleSuccessMessage(IsFollowerObserver observer, Bundle data)
         {
-            boolean isFollower = data.getBoolean(IsFollowerTask.IS_FOLLOWER_KEY);
-            observer.handleSuccess(isFollower);
+            boolean isFollowing = data.getBoolean(IsFollowing.IS_FOLLOWING_KEY);
+            observer.handleSuccess(isFollowing);
         }
     }
 
@@ -98,9 +98,9 @@ public class MainService
         BackgroundTaskUtils.runTask(new FollowTask(authToken, user, new SimpleServiceHandler(observer)));
     }
 
-    public void IsFollower(AuthToken authToken, User currUser, User selectedUser, IsFollowerObserver observer)
+    public void IsFollowing(AuthToken authToken, User currUser, User selectedUser, IsFollowerObserver observer)
     {
-        BackgroundTaskUtils.runTask(new IsFollowerTask(authToken, currUser, selectedUser, new IsFollowerHandler(observer)));
+        BackgroundTaskUtils.runTask(new IsFollowing(authToken, currUser, selectedUser, new IsFollowerHandler(observer)));
     }
 
     private void getFollowingCount(AuthToken authToken, User selectedUser, GetCountObserver observer, ExecutorService executor)

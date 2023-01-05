@@ -2,6 +2,7 @@ Register
 Login
 Logout
 FollowUser
+UnfollowUser
 IsFollowing
 UploadStatus
 GetUser
@@ -11,6 +12,3 @@ GetStory
 GetFollowers
 GetFollowing
 GetFeed
-
-
-

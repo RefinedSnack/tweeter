@@ -1,5 +1,7 @@
 package edu.byu.cs.tweeter.model.network.response;
 
-public class GetFeedResponse extends Response
+import edu.byu.cs.tweeter.model.domain.Status;
+
+public class GetFeedResponse extends PagedResponse<Status>
 {
 }

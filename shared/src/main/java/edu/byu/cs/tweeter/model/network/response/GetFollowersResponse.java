@@ -1,5 +1,7 @@
 package edu.byu.cs.tweeter.model.network.response;
 
-public class GetFollowersResponse extends Response
+import edu.byu.cs.tweeter.model.domain.User;
+
+public class GetFollowersResponse extends PagedResponse<User>
 {
 }

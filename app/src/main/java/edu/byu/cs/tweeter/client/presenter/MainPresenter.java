@@ -164,7 +164,7 @@ public class MainPresenter extends NavigateToUserPresenter<MainPresenter.MainVie
 
     public void isFollowing(AuthToken authToken, User currUser, User selectedUser)
     {
-        mainServiceFactory().IsFollower(authToken, currUser, selectedUser, new IsFollowingObserver());
+        mainServiceFactory().IsFollowing(authToken, currUser, selectedUser, new IsFollowingObserver());
     }
 
     private class IsFollowingObserver extends InfixErrorObserver implements MainService.IsFollowerObserver

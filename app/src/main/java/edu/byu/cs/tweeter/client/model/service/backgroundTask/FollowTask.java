@@ -7,7 +7,8 @@ import java.io.IOException;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.network.TweeterRemoteException;
-import edu.byu.cs.tweeter.model.network.request.IsFollowingRequest;
+import edu.byu.cs.tweeter.model.network.request.FollowUserRequest;
+import edu.byu.cs.tweeter.model.network.response.FollowUserResponse;
 import edu.byu.cs.tweeter.model.network.response.Response;
 
 /**
@@ -29,8 +30,10 @@ public class FollowTask extends AuthenticatedTask
     @Override
     protected Response runTask() throws IOException, TweeterRemoteException
     {
-        IsFollowingRequest request = new IsFollowingRequest();
-        return getServerFacade().isFollowing(request);
+        FollowUserRequest request = new FollowUserRequest();
+        FollowUserResponse response = (FollowUserResponse) getResponse(request, FollowUserRequest.class);
+        return response;
     }
+
 
 }

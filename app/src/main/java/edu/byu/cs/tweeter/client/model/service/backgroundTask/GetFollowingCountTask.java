@@ -9,6 +9,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.network.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.network.request.GetNumFollowingRequest;
 import edu.byu.cs.tweeter.model.network.response.GetCountResponse;
+import edu.byu.cs.tweeter.model.network.response.GetNumFollowingResponse;
 
 /**
  * Background task that queries how many other users a specified user is following.
@@ -25,7 +26,7 @@ public class GetFollowingCountTask extends GetCountTask
     protected GetCountResponse runCountTask() throws IOException, TweeterRemoteException
     {
         GetNumFollowingRequest request = new GetNumFollowingRequest();
-        response = getServerFacade().getNumFollowing(request);
+        GetNumFollowingResponse response = (GetNumFollowingResponse) getResponse(request, GetNumFollowingRequest.class);
         return response;
     }
 }
