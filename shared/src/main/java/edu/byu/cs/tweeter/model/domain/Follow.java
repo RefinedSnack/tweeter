@@ -7,7 +7,8 @@ import java.util.Objects;
 /**
  * Represents a follow relationship.
  */
-public class Follow implements Serializable {
+public class Follow implements Serializable
+{
     /**
      * The user doing the following.
      */
@@ -17,24 +18,29 @@ public class Follow implements Serializable {
      */
     public User followee;
 
-    public Follow() {
+    public Follow()
+    {
     }
 
-    public Follow(User follower, User followee) {
+    public Follow(User follower, User followee)
+    {
         this.follower = follower;
         this.followee = followee;
     }
 
-    public User getFollower() {
+    public User getFollower()
+    {
         return follower;
     }
 
-    public User getFollowee() {
+    public User getFollowee()
+    {
         return followee;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o)
+    {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Follow that = (Follow) o;
@@ -43,12 +49,14 @@ public class Follow implements Serializable {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(follower, followee);
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Follow{" +
                 "follower=" + follower.getAlias() +
                 ", followee=" + followee.getAlias() +

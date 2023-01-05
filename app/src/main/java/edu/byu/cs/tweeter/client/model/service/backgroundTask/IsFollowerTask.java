@@ -7,6 +7,7 @@ import java.util.Random;
 
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.network.response.Response;
 
 /**
  * Background task that determines if one user is following another.
@@ -34,13 +35,14 @@ public class IsFollowerTask extends AuthenticatedTask {
     }
 
     @Override
-    protected void runTask() {
+    protected Response runTask() {
         isFollower = new Random().nextInt() > 0;
 
         // Call sendSuccessMessage if successful
         sendSuccessMessage();
         // or call sendFailedMessage if not successful
         // sendFailedMessage()
+        return null;
     }
 
     @Override

@@ -1,0 +1,16 @@
+Register
+Login
+Logout
+FollowUser
+IsFollowing
+UploadStatus
+GetUser
+GetNumFollowers
+GetNumFollowing
+GetStory
+GetFollowers
+GetFollowing
+GetFeed
+
+
+

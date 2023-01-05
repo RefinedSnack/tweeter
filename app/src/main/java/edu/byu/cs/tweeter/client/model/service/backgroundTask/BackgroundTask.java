@@ -7,10 +7,16 @@ import android.util.Log;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.client.model.network.ConstantURLPathManager;
+import edu.byu.cs.tweeter.client.model.network.ServerFacade;
+import edu.byu.cs.tweeter.client.model.network.URLPathManager;
+import edu.byu.cs.tweeter.model.network.TweeterRemoteException;
+import edu.byu.cs.tweeter.model.network.response.Response;
 import edu.byu.cs.tweeter.util.FakeData;
 
-public abstract class BackgroundTask implements Runnable {
-    private static final String LOG_TAG = "BackgroundTask";
+public abstract class BackgroundTask implements Runnable
+{
+    protected static final String LOG_TAG = "BackgroundTask";
 
     public static final String SUCCESS_KEY = "success";
     public static final String MESSAGE_KEY = "message";
@@ -21,56 +27,60 @@ public abstract class BackgroundTask implements Runnable {
      */
     private final Handler messageHandler;
 
-    protected BackgroundTask(Handler messageHandler) {
+    private ServerFacade serverFacade;
+
+    protected BackgroundTask(Handler messageHandler)
+    {
         this.messageHandler = messageHandler;
     }
 
     @Override
-    public void run() {
-        try {
-            runTask();
-        } catch (Exception ex) {
-            Log.e(LOG_TAG, ex.getMessage(), ex);
-            sendExceptionMessage(ex);
+    public void run()
+    {
+        try
+        {
+            Response response = runTask();
+            handleResponse(response);
+        } catch (IOException | TweeterRemoteException e)
+        {
+            Log.e(LOG_TAG, e.getMessage());
+            sendExceptionMessage(e);
         }
     }
 
-    protected abstract void runTask() throws IOException;
+    protected void handleResponse(Response response)
+    {
+        if (response.isSuccess())
+            sendSuccessMessage();
+        else
+            sendFailedMessage(response.getMessage());
+    }
 
-    protected FakeData getFakeData() {
+    protected abstract Response runTask() throws IOException, TweeterRemoteException;
+
+    protected FakeData getFakeData()
+    {
         return FakeData.getInstance();
     }
 
-    /**
-     * Called by a Task's runTask method when it is successful.
-     *
-     * This method is public to make it accessible to test cases
-     */
-    public void sendSuccessMessage() {
+    public void sendSuccessMessage()
+    {
         Bundle msgBundle = new Bundle();
         msgBundle.putBoolean(SUCCESS_KEY, true);
         loadSuccessBundle(msgBundle);
         sendMessage(msgBundle);
     }
 
-    /**
-     * Called by a Task's runTask method when it is not successful.
-     *
-     * This method is public to make it accessible to test cases
-     */
-    public void sendFailedMessage(String errorMessage) {
+    public void sendFailedMessage(String errorMessage)
+    {
         Bundle msgBundle = new Bundle();
         msgBundle.putBoolean(SUCCESS_KEY, false);
         msgBundle.putString(MESSAGE_KEY, errorMessage);
         sendMessage(msgBundle);
     }
 
-    /**
-     * Called by a Task's runTask method when an exception occurs.
-     *
-     * This method is public to make it accessible to test cases
-     */
-    public void sendExceptionMessage(Exception exception) {
+    public void sendExceptionMessage(Exception exception)
+    {
         Bundle msgBundle = new Bundle();
         msgBundle.putBoolean(SUCCESS_KEY, false);
         msgBundle.putSerializable(EXCEPTION_KEY, exception);
@@ -79,15 +89,34 @@ public abstract class BackgroundTask implements Runnable {
 
     /**
      * Add additional information during a successful task to a Bundle
+     *
      * @param msgBundle The bundle send to the handler with the results of the task
      */
-    protected void loadSuccessBundle(Bundle msgBundle) {
+    protected void loadSuccessBundle(Bundle msgBundle)
+    {
         // By default, do nothing
+        // this should be overridden to add needed data to the bundle
     }
 
-    private void sendMessage(Bundle msgBundle) {
+    private void sendMessage(Bundle msgBundle)
+    {
         Message msg = Message.obtain();
         msg.setData(msgBundle);
         messageHandler.sendMessage(msg);
+    }
+
+    ServerFacade getServerFacade()
+    {
+        if (serverFacade == null)
+        {
+            serverFacade = new ServerFacade(URLPathManagerFactory());
+        }
+
+        return serverFacade;
+    }
+
+    public URLPathManager URLPathManagerFactory()
+    {
+        return new ConstantURLPathManager();
     }
 }

@@ -5,6 +5,7 @@ import android.os.Handler;
 
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.network.response.Response;
 
 /**
  * Background task that returns the profile for a specified user.
@@ -26,13 +27,14 @@ public class GetUserTask extends AuthenticatedTask {
     }
 
     @Override
-    protected void runTask() {
+    protected Response runTask() {
         user = getUser();
 
         // Call sendSuccessMessage if successful
         sendSuccessMessage();
         // or call sendFailedMessage if not successful
         // sendFailedMessage()
+        return null;
     }
 
     @Override

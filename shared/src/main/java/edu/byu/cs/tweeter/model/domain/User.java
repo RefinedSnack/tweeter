@@ -4,64 +4,84 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Represents a user in the system (i.e., a "user profile").
+ * Represents a user in the system.
  */
-public class User implements Comparable<User>, Serializable {
+public class User implements Comparable<User>, Serializable
+{
+
+    private String firstName;
+    private String lastName;
+    private String alias;
+    private String imageUrl;
 
     /**
-     * The user's first name.
+     * Allows construction of the object from Json. Private so it won't be called by other code.
      */
-    public String firstName;
-    /**
-     * The user's last name.
-     */
-    public String lastName;
-    /**
-     * The users "alias" or "handle" by which they are known to other users (e.g., @susan)
-     */
-    public String alias;
-    /**
-     * URL that points to the user's profile image.
-     */
-    public String imageUrl;
-
-
-    public User() {
+    private User()
+    {
     }
 
-    public User(String firstName, String lastName, String imageURL) {
+    public User(String firstName, String lastName, String imageURL)
+    {
         this(firstName, lastName, String.format("@%s%s", firstName, lastName), imageURL);
     }
 
-    public User(String firstName, String lastName, String alias, String imageURL) {
+    public User(String firstName, String lastName, String alias, String imageURL)
+    {
         this.firstName = firstName;
         this.lastName = lastName;
         this.alias = alias;
         this.imageUrl = imageURL;
     }
 
-    public String getFirstName() {
+    public String getFirstName()
+    {
         return firstName;
     }
 
-    public String getLastName() {
+    public void setFirstName(String firstName)
+    {
+        this.firstName = firstName;
+    }
+
+    public String getLastName()
+    {
         return lastName;
     }
 
-    public String getName() {
+    public void setLastName(String lastName)
+    {
+        this.lastName = lastName;
+    }
+
+    public String getName()
+    {
         return String.format("%s %s", firstName, lastName);
     }
 
-    public String getAlias() {
+    public String getAlias()
+    {
         return alias;
     }
 
-    public String getImageUrl() {
+    public void setAlias(String alias)
+    {
+        this.alias = alias;
+    }
+
+    public String getImageUrl()
+    {
         return imageUrl;
     }
 
+    public void setImageUrl(String imageUrl)
+    {
+        this.imageUrl = imageUrl;
+    }
+
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o)
+    {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
@@ -69,12 +89,14 @@ public class User implements Comparable<User>, Serializable {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(alias);
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "User{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -84,7 +106,8 @@ public class User implements Comparable<User>, Serializable {
     }
 
     @Override
-    public int compareTo(User user) {
+    public int compareTo(User user)
+    {
         return this.getAlias().compareTo(user.getAlias());
     }
 }

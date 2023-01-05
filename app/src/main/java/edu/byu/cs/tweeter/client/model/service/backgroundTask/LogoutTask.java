@@ -3,6 +3,7 @@ package edu.byu.cs.tweeter.client.model.service.backgroundTask;
 import android.os.Handler;
 
 import edu.byu.cs.tweeter.model.domain.AuthToken;
+import edu.byu.cs.tweeter.model.network.response.Response;
 
 /**
  * Background task that logs out a user (i.e., ends a session).
@@ -14,7 +15,7 @@ public class LogoutTask extends AuthenticatedTask {
     }
 
     @Override
-    protected void runTask() {
+    protected Response runTask() {
         // We could do this from the presenter, without a task and handler, but we will
         // eventually remove the auth token from  the DB and will need this then.
 
@@ -22,5 +23,6 @@ public class LogoutTask extends AuthenticatedTask {
         sendSuccessMessage();
         // or call sendFailedMessage if not successful
         // sendFailedMessage()
+        return null;
     }
 }

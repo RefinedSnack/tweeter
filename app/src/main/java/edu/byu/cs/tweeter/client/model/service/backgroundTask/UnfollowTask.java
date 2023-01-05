@@ -4,6 +4,7 @@ import android.os.Handler;
 
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.network.response.Response;
 
 /**
  * Background task that removes a following relationship between two users.
@@ -21,7 +22,7 @@ public class UnfollowTask extends AuthenticatedTask {
     }
 
     @Override
-    protected void runTask() {
+    protected Response runTask() {
         // We could do this from the presenter, without a task and handler, but we will
         // eventually access the database from here when we aren't using dummy data.
 
@@ -29,6 +30,7 @@ public class UnfollowTask extends AuthenticatedTask {
         sendSuccessMessage();
         // or call sendFailedMessage if not successful
         // sendFailedMessage()
+        return null;
     }
 
 

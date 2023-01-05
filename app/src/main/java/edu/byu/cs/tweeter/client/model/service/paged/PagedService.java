@@ -3,9 +3,8 @@ package edu.byu.cs.tweeter.client.model.service.paged;
 import android.os.Bundle;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.BackgroundTaskUtils;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.PagedTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.BackgroundTaskHandler;
 import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
@@ -22,9 +21,7 @@ public abstract class PagedService<ITEM>
 
     public void getPage(AuthToken authToken, User user, int pageSize, ITEM last, GetPagedObserver<ITEM> observer)
     {
-        PagedTask pagedTask = getPageTask(authToken, user, pageSize, last, observer);
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(pagedTask);
+        BackgroundTaskUtils.runTask(getPageTask(authToken, user, pageSize, last, observer));
     }
 
     abstract protected PagedTask getPageTask(AuthToken authToken, User user, int pageSize, ITEM last, GetPagedObserver<ITEM> observer);

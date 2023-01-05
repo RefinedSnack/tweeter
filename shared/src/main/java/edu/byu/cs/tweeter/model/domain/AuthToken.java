@@ -5,7 +5,8 @@ import java.io.Serializable;
 /**
  * Represents an auth token in the system.
  */
-public class AuthToken implements Serializable {
+public class AuthToken implements Serializable
+{
     /**
      * Value of the auth token.
      */
@@ -15,27 +16,33 @@ public class AuthToken implements Serializable {
      */
     public String datetime;
 
-    public AuthToken() {
+    public AuthToken()
+    {
     }
 
-    public AuthToken(String token) {
+    public AuthToken(String token)
+    {
         this.token = token;
     }
 
-    public AuthToken(String token, String datetime) {
+    public AuthToken(String token, String datetime)
+    {
         this.token = token;
         this.datetime = datetime;
     }
 
-    public String getToken() {
+    public String getToken()
+    {
         return token;
     }
 
-    public void setToken(String token) {
+    public void setToken(String token)
+    {
         this.token = token;
     }
 
-    public String getDatetime() {
+    public String getDatetime()
+    {
         return datetime;
     }
 }

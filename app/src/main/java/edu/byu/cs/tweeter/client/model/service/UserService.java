@@ -2,11 +2,9 @@ package edu.byu.cs.tweeter.client.model.service;
 
 import android.os.Bundle;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.AuthenticateTask;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.BackgroundTaskUtils;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetUserTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.LoginTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.RegisterTask;
@@ -65,24 +63,17 @@ public class UserService
 
     public void login(String alias, String password, AuthenticationObserver observer)
     {
-        LoginTask loginTask = new LoginTask(alias, password, new AuthenticationHandler(observer));
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(loginTask);
+        BackgroundTaskUtils.runTask(new LoginTask(alias, password, new AuthenticationHandler(observer)));
     }
 
     public void register(String firstName, String lastName, String alias, String password, String imageBytesBase64, AuthenticationObserver observer)
     {
-        RegisterTask registerTask = new RegisterTask(firstName, lastName, alias, password, imageBytesBase64, new AuthenticationHandler(observer));
-
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(registerTask);
+        BackgroundTaskUtils.runTask(new RegisterTask(firstName, lastName, alias, password, imageBytesBase64, new AuthenticationHandler(observer)));
     }
 
     public void getUser(AuthToken authToken, String alias, GetUserObserver observer)
     {
-        GetUserTask getUserTask = new GetUserTask(authToken, alias, new GetUserHandler(observer));
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(getUserTask);
+        BackgroundTaskUtils.runTask(new GetUserTask(authToken, alias, new GetUserHandler(observer)));
     }
 
 

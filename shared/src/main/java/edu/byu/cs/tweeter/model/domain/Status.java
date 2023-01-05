@@ -7,7 +7,8 @@ import java.util.Objects;
 /**
  * Represents a status (or tweet) posted by a user.
  */
-public class Status implements Serializable {
+public class Status implements Serializable
+{
     /**
      * Text for the status.
      */
@@ -29,10 +30,12 @@ public class Status implements Serializable {
      */
     public List<String> mentions;
 
-    public Status() {
+    public Status()
+    {
     }
 
-    public Status(String post, User user, String datetime, List<String> urls, List<String> mentions) {
+    public Status(String post, User user, String datetime, List<String> urls, List<String> mentions)
+    {
         this.post = post;
         this.user = user;
         this.datetime = datetime;
@@ -40,32 +43,39 @@ public class Status implements Serializable {
         this.mentions = mentions;
     }
 
-    public void setUser(User user) {
+    public void setUser(User user)
+    {
         this.user = user;
     }
 
-    public User getUser() {
+    public User getUser()
+    {
         return user;
     }
 
-    public String getDate() {
+    public String getDate()
+    {
         return datetime;
     }
 
-    public String getPost() {
+    public String getPost()
+    {
         return post;
     }
 
-    public List<String> getUrls() {
+    public List<String> getUrls()
+    {
         return urls;
     }
 
-    public List<String> getMentions() {
+    public List<String> getMentions()
+    {
         return mentions;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o)
+    {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Status status = (Status) o;
@@ -77,12 +87,14 @@ public class Status implements Serializable {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(post, user, datetime, mentions, urls);
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Status{" +
                 "post='" + post + '\'' +
                 ", user=" + user +

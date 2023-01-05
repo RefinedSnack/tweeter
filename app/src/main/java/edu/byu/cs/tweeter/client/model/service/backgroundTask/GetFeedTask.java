@@ -21,6 +21,7 @@ public class GetFeedTask extends PagedStatusTask {
 
     @Override
     protected Pair<List<Status>, Boolean> getItems() {
+
         return getFakeData().getPageOfStatus(getLastItem(), getLimit());
     }
 }

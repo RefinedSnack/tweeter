@@ -7,7 +7,9 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.util.Pair;
+import edu.byu.cs.tweeter.model.network.TweeterRemoteException;
+import edu.byu.cs.tweeter.model.network.response.AuthenticateResponse;
+import edu.byu.cs.tweeter.model.network.response.Response;
 
 public abstract class AuthenticateTask extends BackgroundTask {
 
@@ -36,23 +38,26 @@ public abstract class AuthenticateTask extends BackgroundTask {
 
 
     @Override
-    protected final void runTask()  throws IOException {
-        Pair<User, AuthToken> loginResult = runAuthenticationTask();
+    protected final Response runTask() throws IOException, TweeterRemoteException
+    {
+        AuthenticateResponse result = runAuthenticationTask();
 
-        authenticatedUser = loginResult.getFirst();
-        authToken = loginResult.getSecond();
+        authenticatedUser = result.getUser();
+        authToken = result.getAuthToken();
 
-        // Call sendSuccessMessage if successful
-        sendSuccessMessage();
-        // or call sendFailedMessage if not successful
-        // sendFailedMessage()
+        return result;
     }
 
-    protected abstract Pair<User, AuthToken> runAuthenticationTask();
+    protected abstract AuthenticateResponse runAuthenticationTask() throws IOException, TweeterRemoteException;
 
     @Override
     protected void loadSuccessBundle(Bundle msgBundle) {
         msgBundle.putSerializable(USER_KEY, authenticatedUser);
         msgBundle.putSerializable(AUTH_TOKEN_KEY, authToken);
+    }
+
+    public AuthToken getAuthToken()
+    {
+        return authToken;
     }
 }
