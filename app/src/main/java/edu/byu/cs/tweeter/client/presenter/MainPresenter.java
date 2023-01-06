@@ -82,7 +82,7 @@ public class MainPresenter extends NavigateToUserPresenter<MainPresenter.MainVie
     }
 
 
-    public void unfollow(AuthToken authToken, User user)
+    public void unfollow(AuthToken authToken, String user)
     {
         view.setFollowButtonEnabled(false);
         mainServiceFactory().unfollow(authToken, user, new UnfollowObserver());
@@ -90,7 +90,7 @@ public class MainPresenter extends NavigateToUserPresenter<MainPresenter.MainVie
     }
 
 
-    public void follow(AuthToken authToken, User user)
+    public void follow(AuthToken authToken, String user)
     {
         view.setFollowButtonEnabled(false);
         mainServiceFactory().follow(authToken, user, new FollowObserver());
@@ -162,7 +162,7 @@ public class MainPresenter extends NavigateToUserPresenter<MainPresenter.MainVie
         }
     }
 
-    public void isFollowing(AuthToken authToken, User currUser, User selectedUser)
+    public void isFollowing(AuthToken authToken, String currUser, String selectedUser)
     {
         mainServiceFactory().IsFollowing(authToken, currUser, selectedUser, new IsFollowingObserver());
     }
@@ -182,7 +182,7 @@ public class MainPresenter extends NavigateToUserPresenter<MainPresenter.MainVie
         }
     }
 
-    public void getFollowCounts(AuthToken currUserAuthToken, User selectedUser)
+    public void getFollowCounts(AuthToken currUserAuthToken, String selectedUser)
     {
         mainServiceFactory().getFollowCounts(currUserAuthToken, selectedUser, new FollowingObserver(), new FollowersObserver());
     }

@@ -5,49 +5,34 @@ import java.io.Serializable;
 /**
  * A base class for server responses.
  */
-public class Response implements Serializable
+public abstract class Response implements Serializable
 {
 
-    private final boolean success;
-    private final String message;
+    private boolean success;
+    private String message;
 
-    /**
-     * Creates an instance with a null message.
-     *
-     * @param success the success message.
-     */
-    Response(boolean success)
+    protected Response()
     {
-        this(success, null);
+        this(true, null);
     }
 
-    /**
-     * Creates an instance.
-     *
-     * @param success the success indicator.
-     * @param message the error message.
-     */
-    Response(boolean success, String message)
+
+    protected Response(String message)
+    {
+        this(false, message);
+    }
+
+    private Response(boolean success, String message)
     {
         this.success = success;
         this.message = message;
     }
 
-    /**
-     * Indicates whether the response represents a successful result.
-     *
-     * @return the success indicator.
-     */
     public boolean isSuccess()
     {
         return success;
     }
 
-    /**
-     * The error message for unsuccessful results.
-     *
-     * @return an error message or null if the response indicates a successful result.
-     */
     public String getMessage()
     {
         return message;

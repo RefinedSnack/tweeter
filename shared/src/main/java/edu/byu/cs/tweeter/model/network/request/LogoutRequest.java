@@ -1,5 +1,15 @@
 package edu.byu.cs.tweeter.model.network.request;
 
-public class LogoutRequest extends Request
+import edu.byu.cs.tweeter.model.domain.AuthToken;
+
+public class LogoutRequest extends AuthenticatedRequest
 {
+    protected LogoutRequest()
+    {
+    }
+
+    public LogoutRequest(AuthToken authToken)
+    {
+        super(authToken);
+    }
 }

@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
     private Toast logOutToast;
     private Toast postingToast;
     private Toast followToast;
-    private User selectedUser;
+    private String selectedUser;
     private TextView followeeCount;
     private TextView followerCount;
     private Button followButton;
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
     }
 
     @Override
-    public void navigateToUser(User user)
+    public void navigateToUser(String user)
     {
         Intent intent = new Intent(MainActivity.this, MainActivity.class);
         intent.putExtra(MainActivity.CURRENT_USER_KEY, user);

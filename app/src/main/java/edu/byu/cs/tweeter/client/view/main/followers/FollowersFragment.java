@@ -56,7 +56,7 @@ public class FollowersFragment extends Fragment implements PagedPresenter.PagedV
      * @param user the user whose followers are being displayed (not necessarily the logged-in user).
      * @return the fragment.
      */
-    public static FollowersFragment newInstance(User user)
+    public static FollowersFragment newInstance(String user)
     {
         FollowersFragment fragment = new FollowersFragment();
 
@@ -362,7 +362,7 @@ public class FollowersFragment extends Fragment implements PagedPresenter.PagedV
     }
 
     @Override
-    public void navigateToUser(User user)
+    public void navigateToUser(String user)
     {
         Intent intent = new Intent(getContext(), MainActivity.class);
         intent.putExtra(MainActivity.CURRENT_USER_KEY, user);

@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.network.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.network.request.LoginRequest;
+import edu.byu.cs.tweeter.model.network.response.AuthenticateResponse;
 import edu.byu.cs.tweeter.model.network.response.LoginResponse;
 
 
@@ -21,9 +22,10 @@ public class LoginTask extends AuthenticateTask
     }
 
     @Override
-    protected LoginResponse runAuthenticationTask() throws IOException, TweeterRemoteException
+    protected AuthenticateResponse runAuthenticationTask() throws IOException, TweeterRemoteException
     {
-        LoginRequest request = new LoginRequest(username, password);
-        return getServerFacade().login(request);
+        LoginRequest request = new LoginRequest(getUsername(), getPassword());
+        LoginResponse response = (LoginResponse) getResponse(request, LoginRequest.class);
+        return response;
     }
 }

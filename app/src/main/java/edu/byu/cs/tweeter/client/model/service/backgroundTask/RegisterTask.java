@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.network.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.network.request.RegisterRequest;
+import edu.byu.cs.tweeter.model.network.response.AuthenticateResponse;
 import edu.byu.cs.tweeter.model.network.response.RegisterResponse;
 
 /**
@@ -39,9 +40,25 @@ public class RegisterTask extends AuthenticateTask
     }
 
     @Override
-    protected RegisterResponse runAuthenticationTask() throws IOException, TweeterRemoteException
+    protected AuthenticateResponse runAuthenticationTask() throws IOException, TweeterRemoteException
     {
-        RegisterRequest request = new RegisterRequest(username, password);
-        return getServerFacade().register(request);
+        RegisterRequest request = new RegisterRequest(getFirstName(), getLastName(), getUsername(), getPassword(), getImage());
+        RegisterResponse response = (RegisterResponse) getResponse(request, RegisterRequest.class);
+        return response;
+    }
+
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    public String getLastName()
+    {
+        return lastName;
+    }
+
+    public String getImage()
+    {
+        return image;
     }
 }

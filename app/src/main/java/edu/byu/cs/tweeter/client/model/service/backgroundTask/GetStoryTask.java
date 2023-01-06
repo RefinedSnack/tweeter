@@ -15,7 +15,7 @@ import edu.byu.cs.tweeter.model.network.response.PagedResponse;
 /**
  * Background task that retrieves a page of statuses from a user's story.
  */
-public class GetStoryTask extends PagedStatusTask
+public class GetStoryTask extends PagedTask<Status>
 {
 
     public GetStoryTask(AuthToken authToken, User targetUser, int limit, Status lastStatus,
@@ -27,7 +27,7 @@ public class GetStoryTask extends PagedStatusTask
     @Override
     protected PagedResponse<Status> getItems() throws IOException, TweeterRemoteException
     {
-        GetStoryRequest request = new GetStoryRequest();
+        GetStoryRequest request = new GetStoryRequest(getAuthToken(), getTargetUser().getAlias(), getLimit(), getLastItem());
         GetStoryResponse response = (GetStoryResponse) getResponse(request, GetStoryRequest.class);
         return response;
     }

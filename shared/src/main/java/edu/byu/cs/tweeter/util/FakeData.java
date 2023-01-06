@@ -119,7 +119,7 @@ public class FakeData {
 
         for (int i = 0; i < 2; ++i) {
             for (int j = 0; j < fakeUsers.size(); ++j) {
-                User sender = fakeUsers.get(j);
+                String sender = fakeUsers.get(j);
                 User mention = ((j < fakeUsers.size() - 1) ? fakeUsers.get(j + 1) : fakeUsers.get(0));
                 List<String> mentions = Collections.singletonList(mention.getAlias());
                 String url = "https://byu.edu";

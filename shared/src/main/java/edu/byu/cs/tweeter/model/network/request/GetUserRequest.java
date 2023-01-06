@@ -1,5 +1,17 @@
 package edu.byu.cs.tweeter.model.network.request;
 
-public class GetUserRequest extends Request
+import edu.byu.cs.tweeter.model.domain.AuthToken;
+
+public class GetUserRequest extends TargetedUserRequest
 {
+
+    protected GetUserRequest()
+    {
+    }
+
+    public GetUserRequest(AuthToken authToken, String targetAlias)
+    {
+        super(authToken, targetAlias);
+    }
+
 }

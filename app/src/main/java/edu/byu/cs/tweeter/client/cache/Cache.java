@@ -16,7 +16,7 @@ public class Cache {
     /**
      * The currently logged-in user.
      */
-    private User currUser;
+    private String currUser;
     /**
      * The auth token for the current user session.
      */
@@ -35,11 +35,11 @@ public class Cache {
         initialize();
     }
 
-    public User getCurrUser() {
+    public String getCurrUser() {
         return currUser;
     }
 
-    public void setCurrUser(User currUser) {
+    public void setCurrUser(String currUser) {
         this.currUser = currUser;
     }
 

@@ -14,7 +14,7 @@ import edu.byu.cs.tweeter.model.network.response.PagedResponse;
 /**
  * Background task that retrieves a page of followers.
  */
-public class GetFollowersTask extends PagedUserTask
+public class GetFollowersTask extends PagedTask<User>
 {
 
     public GetFollowersTask(AuthToken authToken, User targetUser, int limit, User lastFollower,
@@ -26,7 +26,7 @@ public class GetFollowersTask extends PagedUserTask
     @Override
     protected PagedResponse<User> getItems() throws IOException, TweeterRemoteException
     {
-        GetFollowersRequest request = new GetFollowersRequest();
+        GetFollowersRequest request = new GetFollowersRequest(getAuthToken(), getTargetUser().getAlias(), getLimit(), getLastItem().getAlias());
         GetFollowersResponse response = (GetFollowersResponse) getResponse(request, GetFollowersRequest.class);
         return response;
     }

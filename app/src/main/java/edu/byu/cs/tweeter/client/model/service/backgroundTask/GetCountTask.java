@@ -6,7 +6,6 @@ import android.os.Handler;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.domain.AuthToken;
-import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.network.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.network.response.GetCountResponse;
 import edu.byu.cs.tweeter.model.network.response.Response;
@@ -19,16 +18,16 @@ public abstract class GetCountTask extends AuthenticatedTask {
      * The user whose count is being retrieved.
      * (This can be any user, not just the currently logged-in user.)
      */
-    private final User targetUser;
+    private final String targetUser;
 
     private int count;
 
-    protected GetCountTask(AuthToken authToken, User targetUser, Handler messageHandler) {
+    protected GetCountTask(AuthToken authToken, String targetUser, Handler messageHandler) {
         super(authToken, messageHandler);
         this.targetUser = targetUser;
     }
 
-    protected User getTargetUser() {
+    protected String getTargetUser() {
         return targetUser;
     }
 

@@ -19,31 +19,10 @@ public abstract class PagedTask<T extends Serializable> extends AuthenticatedTas
     public static final String ITEMS_KEY = "items";
     public static final String MORE_PAGES_KEY = "more-pages";
 
-    /**
-     * The user whose items are being retrieved.
-     * (This can be any user, not just the currently logged-in user.)
-     */
     private final User targetUser;
-
-    /**
-     * Maximum number of statuses to return (i.e., page size).
-     */
     private final int limit;
-
-    /**
-     * The last status returned in the previous page of results (can be null).
-     * This allows the new page to begin where the previous page ended.
-     */
     private final T lastItem;
-
-    /**
-     * The items returned in the current page of results.
-     */
     private List<T> items;
-
-    /**
-     * Indicates whether there are more pages of items that can be retrieved on subsequent calls.
-     */
     private boolean hasMorePages;
 
     protected PagedTask(AuthToken authToken, User targetUser, int limit, T lastItem, Handler messageHandler)
@@ -75,14 +54,12 @@ public abstract class PagedTask<T extends Serializable> extends AuthenticatedTas
         PagedResponse<T> response = getItems();
 
         items = response.getItems();
-        hasMorePages = response.getHasMorePages();
+        hasMorePages = response.hasMorePages();
 
         return response;
     }
 
     protected abstract PagedResponse<T> getItems() throws IOException, TweeterRemoteException;
-
-    protected abstract List<User> getUsersForItems(List<T> items);
 
     @Override
     protected final void loadSuccessBundle(Bundle msgBundle)

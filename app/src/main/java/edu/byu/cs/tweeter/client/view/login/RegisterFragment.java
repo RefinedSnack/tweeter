@@ -168,7 +168,7 @@ public class RegisterFragment extends Fragment implements AuthenticationPresente
     }
 
     @Override
-    public void navigateToUser(User user)
+    public void navigateToUser(String user)
     {
         Intent intent = new Intent(getContext(), MainActivity.class);
         intent.putExtra(MainActivity.CURRENT_USER_KEY, user);

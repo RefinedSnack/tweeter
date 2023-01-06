@@ -8,7 +8,7 @@ public abstract class NavigateToUserPresenter<VIEW extends NavigateToUserPresent
 {
     public interface NavigateToUserView extends Presenter.View
     {
-        void navigateToUser(User user);
+        void navigateToUser(String user);
     }
 
     public NavigateToUserPresenter(VIEW view)
@@ -28,7 +28,7 @@ public abstract class NavigateToUserPresenter<VIEW extends NavigateToUserPresent
             implements UserService.GetUserObserver
     {
         @Override
-        public void handleSuccess(User user)
+        public void handleSuccess(String user)
         {
             view.navigateToUser(user);
         }

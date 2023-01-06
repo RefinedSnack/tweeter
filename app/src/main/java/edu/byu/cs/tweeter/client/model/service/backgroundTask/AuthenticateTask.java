@@ -23,12 +23,12 @@ public abstract class AuthenticateTask extends BackgroundTask {
     /**
      * The user's username (or "alias" or "handle"). E.g., "@susan".
      */
-    protected final String username;
+    private final String username;
 
     /**
      * The user's password.
      */
-    protected final String password;
+    private final String password;
 
     protected AuthenticateTask(Handler messageHandler, String username, String password) {
         super(messageHandler);
@@ -59,5 +59,15 @@ public abstract class AuthenticateTask extends BackgroundTask {
     public AuthToken getAuthToken()
     {
         return authToken;
+    }
+
+    public String getUsername()
+    {
+        return username;
+    }
+
+    public String getPassword()
+    {
+        return password;
     }
 }

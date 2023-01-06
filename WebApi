@@ -1,14 +1,14 @@
-Register
-Login
-Logout
-FollowUser
-UnfollowUser
-IsFollowing
-UploadStatus
-GetUser
-GetNumFollowers
-GetNumFollowing
-GetStory
-GetFollowers
-GetFollowing
-GetFeed
+Register [Authenticate]
+Login [Authenticate]
+Logout [Authed]
+FollowUser[Authed]
+UnfollowUser [Authed]
+IsFollowing [Authed]
+PostStatus [Authed]
+GetUser [Authed]
+GetFollowersCount [Authed]
+GetFollowingCount [Authed]
+GetStory [Authed]
+GetFollowers [Authed]
+GetFollowing [Authed]
+GetFeed [Authed]

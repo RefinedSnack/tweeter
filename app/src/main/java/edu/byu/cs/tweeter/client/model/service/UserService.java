@@ -17,12 +17,12 @@ public class UserService
 {
     public interface AuthenticationObserver extends ServiceObserver
     {
-        void handleSuccess(User user, AuthToken token);
+        void handleSuccess(String user, AuthToken token);
     }
 
     public interface GetUserObserver extends ServiceObserver
     {
-        void handleSuccess(User user);
+        void handleSuccess(String user);
     }
 
     private class AuthenticationHandler extends BackgroundTaskHandler<AuthenticationObserver>
@@ -35,7 +35,7 @@ public class UserService
         @Override
         protected void handleSuccessMessage(AuthenticationObserver observer, Bundle data)
         {
-            User loggedInUser = (User) data.getSerializable(AuthenticateTask.USER_KEY);
+            String loggedInUser = (User) data.getSerializable(AuthenticateTask.USER_KEY);
             AuthToken authToken = (AuthToken) data.getSerializable(AuthenticateTask.AUTH_TOKEN_KEY);
 
             // Cache user session information
@@ -56,7 +56,7 @@ public class UserService
         @Override
         protected void handleSuccessMessage(GetUserObserver observer, Bundle data)
         {
-            User user = (User) data.getSerializable(GetUserTask.USER_KEY);
+            String user = (User) data.getSerializable(GetUserTask.USER_KEY);
             observer.handleSuccess(user);
         }
     }

@@ -7,9 +7,7 @@ import android.util.Log;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.network.ConstantURLPathManager;
 import edu.byu.cs.tweeter.client.model.network.ServerFacade;
-import edu.byu.cs.tweeter.client.model.network.URLPathManager;
 import edu.byu.cs.tweeter.model.network.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.network.request.Request;
 import edu.byu.cs.tweeter.model.network.response.Response;
@@ -110,15 +108,10 @@ public abstract class BackgroundTask implements Runnable
     {
         if (serverFacade == null)
         {
-            serverFacade = new ServerFacade(URLPathManagerFactory());
+            serverFacade = new ServerFacade();
         }
 
         return serverFacade;
-    }
-
-    public URLPathManager URLPathManagerFactory()
-    {
-        return new ConstantURLPathManager();
     }
 
     protected Response getResponse(Request request, Class<?> type) throws IOException, TweeterRemoteException

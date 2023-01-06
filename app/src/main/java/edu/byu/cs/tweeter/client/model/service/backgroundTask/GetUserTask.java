@@ -36,7 +36,7 @@ public class GetUserTask extends AuthenticatedTask
     @Override
     protected Response runTask() throws IOException, TweeterRemoteException
     {
-        GetUserRequest request = new GetUserRequest();
+        GetUserRequest request = new GetUserRequest(getAuthToken(), this.alias);
         GetUserResponse response = (GetUserResponse) getResponse(request, GetUserRequest.class);
         user = response.getUser();
         return response;
@@ -46,5 +46,10 @@ public class GetUserTask extends AuthenticatedTask
     protected void loadSuccessBundle(Bundle msgBundle)
     {
         msgBundle.putSerializable(USER_KEY, user);
+    }
+
+    protected String getAlias()
+    {
+        return alias;
     }
 }
