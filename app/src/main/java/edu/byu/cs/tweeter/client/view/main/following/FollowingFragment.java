@@ -55,7 +55,7 @@ public class FollowingFragment extends Fragment implements PagedPresenter.PagedV
      * @param user the user whose following is being displayed (not necessarily the logged-in user).
      * @return the fragment.
      */
-    public static FollowingFragment newInstance(String user)
+    public static FollowingFragment newInstance(User user)
     {
         FollowingFragment fragment = new FollowingFragment();
 
@@ -272,7 +272,7 @@ public class FollowingFragment extends Fragment implements PagedPresenter.PagedV
                 isLoading = true;
                 addLoadingFooter();
 
-                presenter.getPage(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE);
+                presenter.getPage(Cache.getInstance().getCurrUserAuthToken(), user.getAlias(), PAGE_SIZE);
             }
         }
 
@@ -356,7 +356,7 @@ public class FollowingFragment extends Fragment implements PagedPresenter.PagedV
     }
 
     @Override
-    public void navigateToUser(String user)
+    public void navigateToUser(User user)
     {
         Intent intent = new Intent(getContext(), MainActivity.class);
         intent.putExtra(MainActivity.CURRENT_USER_KEY, user);

@@ -23,7 +23,7 @@ public class GetFollowersCountTask extends GetCountTask
     @Override
     protected GetCountResponse runCountTask() throws IOException, TweeterRemoteException
     {
-        GetFollowersCountRequest request = new GetFollowersCountRequest(getAuthToken(),getTargetUser());
+        GetFollowersCountRequest request = new GetFollowersCountRequest(getAuthToken(), getTargetUserAlias());
         GetFollowersCountResponse response = (GetFollowersCountResponse) getResponse(request, GetFollowersCountRequest.class);
         return response;
     }

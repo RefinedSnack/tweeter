@@ -24,7 +24,7 @@ public abstract class AuthenticationPresenter extends NavigateToUserPresenter<Au
     abstract protected class AuthenticationObserver extends InfixErrorObserver implements UserService.AuthenticationObserver
     {
         @Override
-        public void handleSuccess(String user, AuthToken authToken)
+        public void handleSuccess(User user, AuthToken authToken)
         {
             view.clearInfoMessage();
             view.clearErrorMessage();

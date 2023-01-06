@@ -63,7 +63,7 @@ public class ServerFacade
         if (type == GetFollowersCountRequest.class)
             return getServer().getNumFollowers((GetFollowersCountRequest) request);
         if (type == GetFollowingCountRequest.class)
-            return getServer().getNumFollowing((GetFollowingCountRequest) request);
+            return getServer().getFollowingCount((GetFollowingCountRequest) request);
         if (type == GetStoryRequest.class)
             return getServer().getStory((GetStoryRequest) request);
         if (type == GetFollowersRequest.class)

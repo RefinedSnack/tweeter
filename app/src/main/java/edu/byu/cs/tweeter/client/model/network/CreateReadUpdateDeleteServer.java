@@ -102,7 +102,7 @@ public class CreateReadUpdateDeleteServer implements Server
     }
 
     @Override
-    public GetFollowingCountResponse getNumFollowing(GetFollowingCountRequest request) throws IOException, TweeterRemoteException
+    public GetFollowingCountResponse getFollowingCount(GetFollowingCountRequest request) throws IOException, TweeterRemoteException
     {
         return null;
     }

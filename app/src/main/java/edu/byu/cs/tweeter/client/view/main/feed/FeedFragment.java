@@ -63,7 +63,7 @@ public class FeedFragment extends Fragment implements PagedPresenter.PagedView<S
      * @param user the user whose feed is being displayed (not necessarily the logged-in user).
      * @return the fragment.
      */
-    public static FeedFragment newInstance(String user)
+    public static FeedFragment newInstance(User user)
     {
         FeedFragment fragment = new FeedFragment();
 
@@ -327,7 +327,7 @@ public class FeedFragment extends Fragment implements PagedPresenter.PagedView<S
                 isLoading = true;
                 addLoadingFooter();
 
-                presenter.getPage(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE);
+                presenter.getPage(Cache.getInstance().getCurrUserAuthToken(), user.getAlias(), PAGE_SIZE);
             }
         }
 
@@ -416,7 +416,7 @@ public class FeedFragment extends Fragment implements PagedPresenter.PagedView<S
     }
 
     @Override
-    public void navigateToUser(String user)
+    public void navigateToUser(User user)
     {
         Intent intent = new Intent(getContext(), MainActivity.class);
         intent.putExtra(MainActivity.CURRENT_USER_KEY, user);

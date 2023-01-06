@@ -17,16 +17,16 @@ import edu.byu.cs.tweeter.model.network.response.PagedResponse;
 public class GetFollowersTask extends PagedTask<User>
 {
 
-    public GetFollowersTask(AuthToken authToken, User targetUser, int limit, User lastFollower,
+    public GetFollowersTask(AuthToken authToken, String targetUserAlias, int limit, User lastFollower,
                             Handler messageHandler)
     {
-        super(authToken, targetUser, limit, lastFollower, messageHandler);
+        super(authToken, targetUserAlias, limit, lastFollower, messageHandler);
     }
 
     @Override
     protected PagedResponse<User> getItems() throws IOException, TweeterRemoteException
     {
-        GetFollowersRequest request = new GetFollowersRequest(getAuthToken(), getTargetUser().getAlias(), getLimit(), getLastItem().getAlias());
+        GetFollowersRequest request = new GetFollowersRequest(getAuthToken(), getTargetUserAlias(), getLimit(), getLastItem().getAlias());
         GetFollowersResponse response = (GetFollowersResponse) getResponse(request, GetFollowersRequest.class);
         return response;
     }

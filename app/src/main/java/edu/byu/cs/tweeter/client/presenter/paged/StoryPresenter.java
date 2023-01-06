@@ -3,7 +3,6 @@ package edu.byu.cs.tweeter.client.presenter.paged;
 import edu.byu.cs.tweeter.client.model.service.paged.StoryService;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.Status;
-import edu.byu.cs.tweeter.model.domain.User;
 
 public class StoryPresenter extends PagedPresenter<Status>
 {
@@ -19,8 +18,8 @@ public class StoryPresenter extends PagedPresenter<Status>
     }
 
     @Override
-    public void getPage(AuthToken authToken, User user, int pageSize)
+    public void getPage(AuthToken authToken, String targetUserAlias, int pageSize)
     {
-        new StoryService().getPage(authToken, user, pageSize, last, new PagedObserver());
+        new StoryService().getPage(authToken, targetUserAlias, pageSize, last, new PagedObserver());
     }
 }

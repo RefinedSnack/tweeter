@@ -8,8 +8,8 @@ import edu.byu.cs.tweeter.model.domain.User;
 public class FollowingService extends PagedService<User>
 {
     @Override
-    protected PagedTask getPageTask(AuthToken authToken, User user, int pageSize, User last, GetPagedObserver<User> observer)
+    protected PagedTask getPageTask(AuthToken authToken, String targetUserAlias, int pageSize, User last, GetPagedObserver<User> observer)
     {
-        return new GetFollowingTask(authToken, user, pageSize, last, new GetPagedHandler<>(observer));
+        return new GetFollowingTask(authToken, targetUserAlias, pageSize, last, new GetPagedHandler<>(observer));
     }
 }

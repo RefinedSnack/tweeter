@@ -16,15 +16,15 @@ import edu.byu.cs.tweeter.model.network.response.GetFollowingCountResponse;
 public class GetFollowingCountTask extends GetCountTask
 {
 
-    public GetFollowingCountTask(AuthToken authToken, String targetUser, Handler messageHandler)
+    public GetFollowingCountTask(AuthToken authToken, String targetUserAlias, Handler messageHandler)
     {
-        super(authToken, targetUser, messageHandler);
+        super(authToken, targetUserAlias, messageHandler);
     }
 
     @Override
     protected GetCountResponse runCountTask() throws IOException, TweeterRemoteException
     {
-        GetFollowingCountRequest request = new GetFollowingCountRequest(getAuthToken(), getTargetUser());
+        GetFollowingCountRequest request = new GetFollowingCountRequest(getAuthToken(), getTargetUserAlias());
         GetFollowingCountResponse response = (GetFollowingCountResponse) getResponse(request, GetFollowingCountRequest.class);
         return response;
     }

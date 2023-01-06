@@ -5,7 +5,6 @@ import java.util.List;
 import edu.byu.cs.tweeter.client.model.service.paged.PagedService;
 import edu.byu.cs.tweeter.client.presenter.NavigateToUserPresenter;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
-import edu.byu.cs.tweeter.model.domain.User;
 
 public abstract class PagedPresenter<ITEM> extends NavigateToUserPresenter<PagedPresenter.PagedView>
 {
@@ -51,5 +50,5 @@ public abstract class PagedPresenter<ITEM> extends NavigateToUserPresenter<Paged
     }
 
     protected abstract String getPagedMessageInfix();
-    public abstract void getPage(AuthToken authToken, User user, int pageSize);
+    public abstract void getPage(AuthToken authToken, String targetUserAlias, int pageSize);
 }

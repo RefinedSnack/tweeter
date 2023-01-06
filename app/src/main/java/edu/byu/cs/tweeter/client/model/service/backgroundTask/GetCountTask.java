@@ -18,17 +18,17 @@ public abstract class GetCountTask extends AuthenticatedTask {
      * The user whose count is being retrieved.
      * (This can be any user, not just the currently logged-in user.)
      */
-    private final String targetUser;
+    private final String targetUserAlias;
 
     private int count;
 
-    protected GetCountTask(AuthToken authToken, String targetUser, Handler messageHandler) {
+    protected GetCountTask(AuthToken authToken, String targetUserAlias, Handler messageHandler) {
         super(authToken, messageHandler);
-        this.targetUser = targetUser;
+        this.targetUserAlias = targetUserAlias;
     }
 
-    protected String getTargetUser() {
-        return targetUser;
+    protected String getTargetUserAlias() {
+        return targetUserAlias;
     }
 
     @Override

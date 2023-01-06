@@ -63,7 +63,7 @@ public class StoryFragment extends Fragment implements PagedPresenter.PagedView<
      * @param user the user whose story is being displayed (not necessarily the logged-in user).
      * @return the fragment.
      */
-    public static StoryFragment newInstance(String user)
+    public static StoryFragment newInstance(User user)
     {
         StoryFragment fragment = new StoryFragment();
 
@@ -328,7 +328,7 @@ public class StoryFragment extends Fragment implements PagedPresenter.PagedView<
             {   // This guard is important for avoiding a race condition in the scrolling code.
                 isLoading = true;
                 addLoadingFooter();
-                presenter.getPage(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE);
+                presenter.getPage(Cache.getInstance().getCurrUserAuthToken(), user.getAlias(), PAGE_SIZE);
             }
         }
 
@@ -418,7 +418,7 @@ public class StoryFragment extends Fragment implements PagedPresenter.PagedView<
     }
 
     @Override
-    public void navigateToUser(String user)
+    public void navigateToUser(User user)
     {
         Intent intent = new Intent(getContext(), MainActivity.class);
         intent.putExtra(MainActivity.CURRENT_USER_KEY, user);

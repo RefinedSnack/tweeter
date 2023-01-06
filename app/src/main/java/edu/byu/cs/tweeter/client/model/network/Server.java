@@ -51,7 +51,7 @@ public interface Server
 
     GetFollowersCountResponse getNumFollowers(GetFollowersCountRequest request) throws IOException, TweeterRemoteException;
 
-    GetFollowingCountResponse getNumFollowing(GetFollowingCountRequest request) throws IOException, TweeterRemoteException;
+    GetFollowingCountResponse getFollowingCount(GetFollowingCountRequest request) throws IOException, TweeterRemoteException;
 
     GetStoryResponse getStory(GetStoryRequest request) throws IOException, TweeterRemoteException;
 

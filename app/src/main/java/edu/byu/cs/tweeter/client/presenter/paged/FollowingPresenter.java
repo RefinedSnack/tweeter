@@ -18,9 +18,9 @@ public class FollowingPresenter extends PagedPresenter<User>
     }
 
     @Override
-    public void getPage(AuthToken authToken, User user, int pageSize)
+    public void getPage(AuthToken authToken, String targetUserAlias, int pageSize)
     {
-        new FollowingService().getPage(authToken, user, pageSize, last, new PagedObserver());
+        new FollowingService().getPage(authToken, targetUserAlias, pageSize, last, new PagedObserver());
     }
 }
 

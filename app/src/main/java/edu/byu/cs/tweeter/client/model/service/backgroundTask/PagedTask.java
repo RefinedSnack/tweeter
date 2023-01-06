@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import edu.byu.cs.tweeter.model.domain.AuthToken;
-import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.network.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.network.response.PagedResponse;
 import edu.byu.cs.tweeter.model.network.response.Response;
@@ -19,23 +18,23 @@ public abstract class PagedTask<T extends Serializable> extends AuthenticatedTas
     public static final String ITEMS_KEY = "items";
     public static final String MORE_PAGES_KEY = "more-pages";
 
-    private final User targetUser;
+    private final String targetUserAlias;
     private final int limit;
     private final T lastItem;
     private List<T> items;
     private boolean hasMorePages;
 
-    protected PagedTask(AuthToken authToken, User targetUser, int limit, T lastItem, Handler messageHandler)
+    protected PagedTask(AuthToken authToken, String targetUserAlias, int limit, T lastItem, Handler messageHandler)
     {
         super(authToken, messageHandler);
-        this.targetUser = targetUser;
+        this.targetUserAlias = targetUserAlias;
         this.limit = limit;
         this.lastItem = lastItem;
     }
 
-    protected User getTargetUser()
+    protected String getTargetUserAlias()
     {
-        return targetUser;
+        return targetUserAlias;
     }
 
     protected int getLimit()

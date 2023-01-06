@@ -34,9 +34,9 @@ class SectionsPagerAdapter extends FragmentPagerAdapter {
     private static final int[] TAB_TITLES = new int[]{R.string.feedTabTitle, R.string.storyTabTitle, R.string.followingTabTitle, R.string.followersTabTitle};
     private static final int[] TAB_TITLES_OTHER_USERS = new int[]{R.string.storyTabTitle, R.string.followingTabTitle, R.string.followersTabTitle};
     private final Context mContext;
-    private final String user;
+    private final User user;
 
-    public SectionsPagerAdapter(Context context, FragmentManager fm, String user) {
+    public SectionsPagerAdapter(Context context, FragmentManager fm, User user) {
         super(fm);
         mContext = context;
         this.user = user;

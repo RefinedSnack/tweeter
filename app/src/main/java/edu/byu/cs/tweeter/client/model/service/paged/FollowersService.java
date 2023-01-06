@@ -9,8 +9,8 @@ public class FollowersService extends PagedService<User>
 {
 
     @Override
-    protected PagedTask getPageTask(AuthToken authToken, User user, int pageSize, User last, GetPagedObserver<User> observer)
+    protected PagedTask getPageTask(AuthToken authToken, String targetUserAlias, int pageSize, User last, GetPagedObserver<User> observer)
     {
-        return new GetFollowersTask(authToken, user, pageSize, last, new GetPagedHandler<>(observer));
+        return new GetFollowersTask(authToken, targetUserAlias, pageSize, last, new GetPagedHandler<>(observer));
     }
 }

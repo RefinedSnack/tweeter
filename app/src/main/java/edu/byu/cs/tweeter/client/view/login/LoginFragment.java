@@ -105,7 +105,7 @@ public class LoginFragment extends Fragment implements AuthenticationPresenter.A
     }
 
     @Override
-    public void navigateToUser(String user)
+    public void navigateToUser(User user)
     {
         Intent intent = new Intent(getContext(), MainActivity.class);
         intent.putExtra(MainActivity.CURRENT_USER_KEY, user);

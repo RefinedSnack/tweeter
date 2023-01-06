@@ -82,18 +82,18 @@ public class MainPresenter extends NavigateToUserPresenter<MainPresenter.MainVie
     }
 
 
-    public void unfollow(AuthToken authToken, String user)
+    public void unfollow(AuthToken authToken, User user)
     {
         view.setFollowButtonEnabled(false);
-        mainServiceFactory().unfollow(authToken, user, new UnfollowObserver());
+        mainServiceFactory().unfollow(authToken, user.getAlias(), new UnfollowObserver());
         view.displayInfoMessage("Removing " + user.getName() + "...");
     }
 
 
-    public void follow(AuthToken authToken, String user)
+    public void follow(AuthToken authToken, User user)
     {
         view.setFollowButtonEnabled(false);
-        mainServiceFactory().follow(authToken, user, new FollowObserver());
+        mainServiceFactory().follow(authToken, user.getAlias(), new FollowObserver());
         view.displayInfoMessage("Adding " + user.getName() + "...");
     }
 
@@ -162,9 +162,9 @@ public class MainPresenter extends NavigateToUserPresenter<MainPresenter.MainVie
         }
     }
 
-    public void isFollowing(AuthToken authToken, String currUser, String selectedUser)
+    public void isFollowing(AuthToken authToken, User currUser, User selectedUser)
     {
-        mainServiceFactory().IsFollowing(authToken, currUser, selectedUser, new IsFollowingObserver());
+        mainServiceFactory().IsFollowing(authToken, currUser.getAlias(), selectedUser.getAlias(), new IsFollowingObserver());
     }
 
     private class IsFollowingObserver extends InfixErrorObserver implements MainService.IsFollowerObserver
@@ -182,9 +182,9 @@ public class MainPresenter extends NavigateToUserPresenter<MainPresenter.MainVie
         }
     }
 
-    public void getFollowCounts(AuthToken currUserAuthToken, String selectedUser)
+    public void getFollowCounts(AuthToken currUserAuthToken, User selectedUser)
     {
-        mainServiceFactory().getFollowCounts(currUserAuthToken, selectedUser, new FollowingObserver(), new FollowersObserver());
+        mainServiceFactory().getFollowCounts(currUserAuthToken, selectedUser.getAlias(), new FollowingObserver(), new FollowersObserver());
     }
 
     private class FollowingObserver extends InfixErrorObserver implements MainService.GetCountObserver

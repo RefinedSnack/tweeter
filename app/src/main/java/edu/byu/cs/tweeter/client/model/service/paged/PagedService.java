@@ -9,7 +9,6 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.PagedTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.handler.BackgroundTaskHandler;
 import edu.byu.cs.tweeter.client.model.service.observer.ServiceObserver;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
-import edu.byu.cs.tweeter.model.domain.User;
 
 public abstract class PagedService<ITEM>
 {
@@ -19,12 +18,12 @@ public abstract class PagedService<ITEM>
         void handleLoading();
     }
 
-    public void getPage(AuthToken authToken, User user, int pageSize, ITEM last, GetPagedObserver<ITEM> observer)
+    public void getPage(AuthToken authToken, String targetUserAlias, int pageSize, ITEM last, GetPagedObserver<ITEM> observer)
     {
-        BackgroundTaskUtils.runTask(getPageTask(authToken, user, pageSize, last, observer));
+        BackgroundTaskUtils.runTask(getPageTask(authToken, targetUserAlias, pageSize, last, observer));
     }
 
-    abstract protected PagedTask getPageTask(AuthToken authToken, User user, int pageSize, ITEM last, GetPagedObserver<ITEM> observer);
+    abstract protected PagedTask getPageTask(AuthToken authToken, String targetUserAlias, int pageSize, ITEM last, GetPagedObserver<ITEM> observer);
 
     protected class GetPagedHandler<PAGE_ITEM> extends BackgroundTaskHandler<GetPagedObserver<PAGE_ITEM>>
     {
